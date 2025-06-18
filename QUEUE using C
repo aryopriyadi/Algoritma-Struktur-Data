@@ -1,0 +1,145 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 5  // Maksimal kapasitas antrian
+
+// Struktur Antrian, yang merepresentasikan Queue
+struct Antrian {
+    int head;        // Indeks elemen pertama (depan) pada queue
+    int tail;        // Indeks elemen terakhir (belakang) pada queue
+    int data[MAX];   // Array untuk menyimpan data antrian dengan kapasitas MAX
+} antrian;
+
+// Fungsi untuk mengecek apakah antrian kosong
+int isEmpty() {
+    // Antrian dikatakan kosong jika tail bernilai -1 (tidak ada data)
+    if (antrian.tail == -1) {
+        return 1;  // TRUE, antrian kosong
+    } else {
+        return 0;  // FALSE, antrian tidak kosong
+    }
+}
+
+// Fungsi untuk mengecek apakah antrian penuh
+int isFull() {
+    // Antrian penuh jika tail sudah berada pada posisi terakhir (MAX-1)
+    if (antrian.tail == MAX - 1) {
+        return 1;  // TRUE, antrian penuh
+    } else {
+        return 0;  // FALSE, antrian belum penuh
+    }
+}
+
+// Fungsi untuk inisialisasi antrian (mengatur head dan tail ke -1)
+void inisialisasi() {
+    antrian.head = antrian.tail = -1;  // Tandai antrian kosong pada awal program
+}
+
+// Fungsi memasukkan data ke belakang antrian (enqueue)
+void enqueue(int data) {
+    if (isEmpty() == 1) {
+        // Jika antrian kosong, atur head dan tail ke 0
+        antrian.head = antrian.tail = 0;
+        antrian.data[antrian.tail] = data;  // Masukkan data ke posisi tail
+        printf("Data %d berhasil diinput!\n", antrian.data[antrian.tail]);
+    } else {
+        if (isFull() == 0) {
+            // Jika antrian belum penuh, naikkan tail dan masukkan data di posisi tail
+            antrian.tail++;
+            antrian.data[antrian.tail] = data;
+            printf("Data %d berhasil di input\n", antrian.data[antrian.tail]);
+        } else {
+            // Kalau antrian penuh, tidak dapat menambahkan data
+            printf("Data sudah penuh!\n");
+        }
+    }
+}
+
+// Fungsi mengeluarkan data dari depan antrian (dequeue)
+int dequeue() {
+    if (isEmpty() == 1) {
+        printf("Data masih kosong!\n");  // Tidak ada data yang bisa dikeluarkan
+        return -1;  // Kode error, karena antrian kosong
+    } else {
+        int i;
+        int e = antrian.data[antrian.head];  // Ambil data terdepan untuk dikembalikan
+        printf("Data %d telah dikeluarkan dari antrian\n", antrian.data[antrian.head]);
+        // Geser semua elemen ke depan agar posisi head selalu di indeks 0
+        for (i = antrian.head; i <= antrian.tail - 1; i++) {
+            antrian.data[i] = antrian.data[i + 1];
+        }
+        antrian.tail--;  // Kurangi jumlah data karena sudah dikeluarkan
+        // Reset antrian bila sudah kosong lagi
+        if (antrian.tail < antrian.head) {
+            antrian.head = antrian.tail = -1;
+        }
+        return e;  // Kembalikan data yang dikeluarkan
+    }
+}
+
+// Fungsi mengosongkan seluruh antrian
+void clear() {
+    antrian.head = antrian.tail = -1;  // Reset indeks head dan tail
+    printf("Data telah di-reset!\n");
+}
+
+// Fungsi mencetak seluruh isi antrian dari head ke tail
+void print() {
+    if (isEmpty() == 0) {
+        // Jika antrian tidak kosong, tampilkan semua data
+        printf("Isi Antrian: ");
+        for (int i = antrian.head; i <= antrian.tail; i++) {
+            printf("%d ", antrian.data[i]);
+        }
+        printf("\n");
+    } else {
+        printf("Data masih kosong!\n");
+    }
+}
+
+// Fungsi utama program
+int main() {
+    int dt;
+    inisialisasi();   // Inisialisasi antrian sebelum digunakan
+    int choice;
+
+    do {
+        // Menu operasi antrian kepada pengguna
+        printf("\nMenu Antrian:\n");
+        printf("1. Enqueue (Masukkan data ke antrian)\n");
+        printf("2. Dequeue (Keluarkan data dari antrian)\n");
+        printf("3. Print Antrian\n");
+        printf("4. Clear Antrian\n");
+        printf("5. Exit\n");
+        printf("Input pilihan: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+            case 1:
+                if (isFull() != 1) {
+                    printf("Masukkan data: ");
+                    scanf("%d", &dt);
+                    enqueue(dt);  // Proses input data ke antrian
+                } else {
+                    printf("Data sudah penuh!\n");  // Tidak dapat memasukkan data jika antrian penuh
+                }
+                break;
+            case 2:
+                dequeue();  // Proses keluarkan data dari antrian
+                break;
+            case 3:
+                print();    // Tampilkan isi antrian saat ini
+                break;
+            case 4:
+                clear();    // Kosongkan seluruh antrian
+                break;
+            case 5:
+                printf("Keluar program.\n");
+                break;
+            default:
+                printf("Pilihan tidak valid, silakan coba lagi.\n");
+        }
+    } while (choice > 0 && choice < 6);
+
+    return 0;
+}
