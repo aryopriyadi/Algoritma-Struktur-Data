@@ -1,0 +1,215 @@
+<============================ BUBBLE SORTING ============================>
+#include <iostream>
+#include <vector>
+
+// Fungsi untuk menukar nilai dua elemen menggunakan referensi
+void swap(int &a, int &b) {
+    int tmp = a;  // Simpan nilai a sementara
+    a = b;        // Isi a dengan nilai b
+    b = tmp;      // Isi b dengan nilai sementara
+}
+
+// Fungsi untuk mengurutkan vektor secara ascending menggunakan Bubble Sort
+void bubbleSortAscend(std::vector<int> &a) {
+    int n = a.size();
+    for (int i = 0; i < n - 1; i++) {               // Loop untuk tiap elemen (kecuali yang terakhir)
+        for (int j = 0; j < n - i - 1; j++) {       // Loop untuk pasangan elemen yang bersebelahan
+            if (a[j] > a[j + 1]) {                   // Jika elemen kiri lebih besar dari kanan
+                swap(a[j], a[j + 1]);                 // Tukar keduanya
+            }
+        }
+    }
+}
+
+// Fungsi untuk mengurutkan vektor secara descending menggunakan Bubble Sort
+void bubbleSortDescend(std::vector<int> &a) {
+    int n = a.size();
+    for (int i = 0; i < n - 1; i++) {               
+        for (int j = 0; j < n - i - 1; j++) {       
+            if (a[j] < a[j + 1]) {                   // Jika elemen kiri lebih kecil dari kanan
+                swap(a[j], a[j + 1]);                 
+            }
+        }
+    }
+}
+
+// Fungsi untuk menampilkan isi vektor
+void printArray(const std::vector<int> &a) {
+    std::cout << "[ ";
+    for (size_t i = 0; i < a.size(); ++i) {
+        std::cout << a[i];
+        if (i < a.size() - 1)
+            std::cout << ", ";
+    }
+    std::cout << " ]\n";
+}
+
+// Fungsi utama program
+int main() {
+    int n;
+    std::cout << "BUBBLE SORT ASCENDING & DESCENDING\n\n";
+
+    std::cout << "Masukkan jumlah data yang ingin dimasukkan: ";
+    std::cin >> n;
+
+    std::vector<int> data(n);
+    std::cout << "Masukkan " << n << " data (integer):\n";
+    for (int i = 0; i < n; i++) {
+        std::cin >> data[i];
+    }
+
+    bubbleSortAscend(data);                   // Urut ascending
+    std::cout << "Data yang telah diurutkan secara ascending:\n";
+    printArray(data);
+
+    bubbleSortDescend(data);                  // Urut descending
+    std::cout << "Data yang telah diurutkan secara descending:\n";
+    printArray(data);
+
+    return 0;
+}
+
+<============================ INSERTION SORTING ============================>
+#include <iostream>
+#include <vector>
+
+// Fungsi untuk mengurutkan vektor secara ascending menggunakan Insertion Sort
+void insertionSortAscend(std::vector<int> &a) {
+    int n = a.size();
+    for (int i = 0; i < n; i++) {
+        int tmp = a[i];           // Simpan elemen saat ini sebagai key
+        int j = i;
+        // Geser elemen yang lebih besar ke kanan untuk memberi ruang key
+        while (j > 0 && a[j - 1] > tmp) {
+            a[j] = a[j - 1];
+            j--;
+        }
+        a[j] = tmp;               // Masukkan key ke posisi yang benar
+    }
+}
+
+// Fungsi untuk mengurutkan vektor secara descending menggunakan Insertion Sort
+void insertionSortDescend(std::vector<int> &a) {
+    int n = a.size();
+    for (int i = 0; i < n; i++) {
+        int tmp = a[i];
+        int j = i;
+        // Geser elemen yang lebih kecil ke kanan
+        while (j > 0 && a[j - 1] < tmp) {
+            a[j] = a[j - 1];
+            j--;
+        }
+        a[j] = tmp;
+    }
+}
+
+// Fungsi untuk menampilkan isi vektor
+void printArray(const std::vector<int> &a) {
+    std::cout << "[ ";
+    for (size_t i = 0; i < a.size(); ++i) {
+        std::cout << a[i];
+        if (i < a.size() - 1)
+            std::cout << ", ";
+    }
+    std::cout << " ]\n";
+}
+
+// Fungsi utama program
+int main() {
+    int n;
+    std::cout << "INSERTION SORT ASCENDING & DESCENDING\n\n";
+
+    std::cout << "Masukkan jumlah data yang ingin dimasukkan: ";
+    std::cin >> n;
+
+    std::vector<int> data(n);
+    std::cout << "Masukkan " << n << " data (integer):\n";
+    for (int i = 0; i < n; i++) {
+        std::cin >> data[i];
+    }
+
+    insertionSortAscend(data);                 // Urut ascending
+    std::cout << "Data yang telah diurutkan secara ascending:\n";
+    printArray(data);
+
+    insertionSortDescend(data);                // Urut descending
+    std::cout << "Data yang telah diurutkan secara descending:\n";
+    printArray(data);
+
+    return 0;
+}
+
+<============================ SELECTION SORTING ============================>
+#include <iostream>
+#include <vector>
+
+// Fungsi untuk menukar nilai dua elemen menggunakan referensi
+void swap(int &a, int &b) {
+    int tmp = a;  // Simpan nilai sementara
+    a = b;        // Tukar nilai a dengan b
+    b = tmp;
+}
+
+// Fungsi untuk mengurutkan vektor secara ascending menggunakan Selection Sort
+void selectionSortAscend(std::vector<int> &a) {
+    int n = a.size();
+    for (int i = 0; i < n - 1; i++) {
+        int min = i;                      // Asumsi indeks i adalah nilai minimum
+        for (int j = i + 1; j < n; j++) {
+            if (a[min] > a[j]) {          // Cari nilai lebih kecil dari nilai minimum saat ini
+                min = j;
+            }
+        }
+        swap(a[min], a[i]);               // Tukar nilai minimum ditemukan dengan posisi i
+    }
+}
+
+// Fungsi untuk mengurutkan vektor secara descending menggunakan Selection Sort
+void selectionSortDescend(std::vector<int> &a) {
+    int n = a.size();
+    for (int i = 0; i < n - 1; i++) {
+        int max = i;                     // Asumsi indeks i adalah nilai maksimum
+        for (int j = i + 1; j < n; j++) {
+            if (a[max] < a[j]) {         // Cari nilai yang lebih besar dari nilai maksimum saat ini
+                max = j;
+            }
+        }
+        swap(a[max], a[i]);              // Tukar nilai maksimum ditemukan dengan posisi i
+    }
+}
+
+// Fungsi untuk menampilkan isi vektor
+void printArray(const std::vector<int> &a) {
+    std::cout << "[ ";
+    for (size_t i = 0; i < a.size(); ++i) {
+        std::cout << a[i];
+        if (i < a.size() - 1)
+            std::cout << ", ";
+    }
+    std::cout << " ]\n";
+}
+
+// Fungsi utama program
+int main() {
+    int n;
+    std::cout << "SELECTION SORT ASCENDING & DESCENDING\n\n";
+
+    std::cout << "Masukkan jumlah data yang ingin dimasukkan: ";
+    std::cin >> n;
+
+    std::vector<int> data(n);
+    std::cout << "Masukkan " << n << " data (integer):\n";
+    for (int i = 0; i < n; i++) {
+        std::cin >> data[i];
+    }
+
+    selectionSortAscend(data);              // Urut ascending
+    std::cout << "Data yang telah diurutkan secara ascending:\n";
+    printArray(data);
+
+    selectionSortDescend(data);             // Urut descending
+    std::cout << "Data yang telah diurutkan secara descending:\n";
+    printArray(data);
+
+    return 0;
+}
