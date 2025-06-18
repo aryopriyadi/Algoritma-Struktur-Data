@@ -1,0 +1,119 @@
+<=========================== BINARY SEARCHING ===========================>
+#include <stdio.h>
+#include <stdlib.h>
+
+// Fungsi binarySearch melakukan pencarian elemen pada array yang sudah terurut
+int binarySearch(int array[], int start_index, int end_index, int element) {
+    // Selama indeks awal masih sama atau lebih kecil dari indeks akhir,
+    // iterasi terus dilakukan
+    while (start_index <= end_index) {
+        // Menghitung indeks tengah untuk membagi pencarian
+        int middle = start_index + (end_index - start_index) / 2;
+
+        // Jika elemen tengah sama dengan elemen yang dicari, kembalikan posisi indeksnya
+        if (array[middle] == element) {
+            return middle;  // *Elemen ditemukan*
+        }
+        // Jika elemen tengah lebih kecil dari elemen yang dicari, abaikan bagian kiri
+        else if (array[middle] < element) {
+            start_index = middle + 1; // Cari di bagian kanan
+        }
+        // Jika elemen tengah lebih besar, abaikan bagian kanan
+        else {
+            end_index = middle - 1; // Cari di bagian kiri
+        }
+    }
+    // Jika elemen tidak ditemukan, kembalikan -1
+    return -1;
+}
+
+int main(void) {
+    int n, cari, i, j, temp;
+
+    printf("Mau input berapa data? ");
+    scanf("%d", &n);
+
+    int Data[n];  // Deklarasi array untuk menampung data
+
+    printf("Masukkan %d data (integer)\n", n);
+    for (i = 0; i < n; i++) {
+        scanf("%d", &Data[i]);  // Input data ke array
+    }
+
+    // *Sorting menggunakan metode bubble sort supaya array menjadi terurut*
+    for (i = 0; i < n-1; i++) {
+        for (j = i + 1; j < n; j++) {
+            if (Data[i] > Data[j]) {
+                temp = Data[i];
+                Data[i] = Data[j];
+                Data[j] = temp;
+            }
+        }
+    }
+
+    // *Menampilkan data yang sudah terurut*
+    printf("Data yang sudah di sortir:\n[");
+    for (i = 0; i < n; i++) {
+        printf("%d", Data[i]);
+        if (i < n - 1) {
+            printf(", ");
+        }
+    }
+    printf("]\n");
+
+    printf("Cari angka berapa? ");
+    scanf("%d", &cari);
+
+    // *Melakukan binary search pada array yang sudah terurut*
+    int found_index = binarySearch(Data, 0, n - 1, cari);
+
+    // Menampilkan hasil pencarian
+    if (found_index == -1) {
+        printf("Angka tersebut TIDAK DITEMUKAN!\n");
+    } else {
+        printf("Angka DITEMUKAN pada lokasi/index [%d]\n", found_index);
+    }
+
+    return 0;
+}
+
+<=========================== SEQUENTIAL SEARCHING ===========================>
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void) {
+    int n, cari, i, jumlah = 0;
+
+    printf("Mau input berapa data? ");
+    scanf("%d", &n);
+
+    int Data[n];  // Deklarasi array untuk data
+
+    printf("Masukkan %d data (integer)\n", n);
+    for (i = 0; i < n; i++) {
+        scanf("%d", &Data[i]);  // Input data
+    }
+
+    printf("Cari angka berapa? ");
+    scanf("%d", &cari);
+
+    // *Melakukan sequential search dengan memeriksa setiap elemen satu per satu*
+    for (i = 0; i < n; i++) {
+        if (Data[i] == cari) {
+            printf("Angka '%d' DITEMUKAN pada lokasi/indeks [%d]\n", cari, i);
+            jumlah++;  // Hitung jumlah kemunculan angka yang dicari
+        }
+    }
+
+    // Jika tidak ditemukan sama sekali, beritahu pengguna
+    if (jumlah == 0) {
+        printf("Angka %d TIDAK DITEMUKAN!\n", cari);
+    }
+    // Jika ditemukan lebih dari satu kali, tampilkan berapa kali ditemukan
+    else {
+        printf("Angka '%d' DITEMUKAN sebanyak %d kali\n", cari, jumlah);
+    }
+
+    return 0;
+}
