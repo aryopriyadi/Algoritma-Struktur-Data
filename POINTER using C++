@@ -1,0 +1,106 @@
+<======================= KODE PROGRAM 1 =======================>
+#include <iostream> // Untuk input/output di C++
+#include <cstdlib>  // Untuk fungsi malloc dan free jika diperlukan, biasanya tidak digunakan di C++ modern
+
+int main() {
+    // Mendeklarasikan pointer integer *a dan *b, namun belum diinisialisasi
+    int *a = nullptr; // Inisialisasi ke nullptr agar aman
+    int *b = nullptr; // Inisialisasi ke nullptr agar aman
+
+    // Menampilkan alamat memori dari variabel pointer a dan b menggunakan operator & dan std::cout
+    std::cout << "Variabel pointer a memiliki alamat memori " << &a << std::endl;
+    std::cout << "Sedangkan variabel pointer b ada pada " << &b << std::endl;
+
+    // *a dan *b belum menunjuk ke alamat memori yang valid, mengakses *a atau *b tanpa inisialisasi dapat menyebabkan undefined behavior
+    // Oleh karena itu, jangan lakukan dereference sebelum pointer diisi alamat yang valid
+    // Contoh salah: std::cout << *a; 
+
+    // Menunggu user menekan enter untuk menahan layar (mirip getchar di C)
+    std::cin.get(); 
+    return 0; // Mengembalikan nilai 0 sebagai tanda program selesai
+}
+
+<======================= KODE PROGRAM 2 =======================>
+#include <iostream>
+#include <cstdlib> // Untuk malloc, calloc, realloc, dan free (tidak disarankan di C++ modern)
+using namespace std;
+
+int main() {
+    // Mendeklarasikan array statis dan pointer menunjuk ke elemen pertama array
+    int array[] = {3, 2, 5, 6, 1};
+    int *p_array = array; // Di C++ array otomatis dapat di-convert ke pointer pertama
+
+    // Menampilkan seluruh isi array menggunakan pointer aritmatika
+    for (int i = 0; i < 5; i++) {
+        cout << *(p_array + i) << " ";
+    }
+    cout << endl;
+
+    // Mengubah nilai elemen pertama array melalui pointer
+    *p_array = 10;
+
+    // Mengalokasikan memori secara dinamis untuk 5 elemen int menggunakan malloc (meski dalam C++ disarankan new)
+    int *ps = (int *)malloc(5 * sizeof(int));
+    if (ps == NULL) {
+        cerr << "Gagal mengalokasikan memori" << endl;
+        exit(1);
+    }
+
+    // Inisialisasi nilai pada array dinamis
+    for (int i = 0; i < 5; i++) {
+        ps[i] = i + 1;
+    }
+
+    // Mengalokasikan memori menggunakan calloc (menginisialisasi ke 0)
+    int *p_calloc = (int *)calloc(5, sizeof(int));
+    if (p_calloc == NULL) {
+        cerr << "Memory not allocated" << endl;
+        exit(1);
+    }
+
+    // Mengisi nilai pada array yang dialokasikan dengan calloc
+    for (int i = 0; i < 5; i++) {
+        p_calloc[i] = i + 1;
+    }
+
+    // Melepaskan memori calloc setelah pemakaian
+    free(p_calloc);
+
+    // free tidak boleh diterapkan pada array statis seperti p_array
+    // free(p_array); // Ini salah dan harus dihindari
+
+    // Mengubah ukuran alokasi memori ps menjadi 10 elemen (realloc)
+    ps = (int *)realloc(ps, 10 * sizeof(int));
+    if (ps == NULL) {
+        cerr << "Realloc failed" << endl;
+        exit(1);
+    }
+
+    // Inisialisasi elemen baru setelah ukuran diubah
+    for (int i = 5; i < 10; i++) {
+        ps[i] = i + 1;
+    }
+
+    cout << endl;
+
+    // Menampilkan seluruh isi array dinamis yang telah diperluas
+    for (int i = 0; i < 10; i++) {
+        cout << ps[i] << " ";
+    }
+    cout << endl;
+
+    // Menampilkan ukuran pointer dan array
+    cout << "Ukuran ps: " << sizeof(ps) << endl;          // Ukuran pointer, bukan data yang ditunjuk
+    cout << "Ukuran p_calloc: " << sizeof(p_calloc) << endl; 
+    cout << "Ukuran array: " << sizeof(array) << endl;    // Ukuran array sebenarnya (elemen * ukuran tipe)
+
+    // Menampilkan nilai dan alamat pointer
+    cout << "Nilai p_array[1]: " << *(p_array + 1)
+         << ", alamat pointer p_array: " << &p_array
+         << ", alamat ps: " << &ps << endl;
+
+    // Melepaskan memori ps yang dialokasikan
+    free(ps);
+
+    return 0;
+}
