@@ -1,0 +1,70 @@
+#include <iostream>
+#include <string>       // Untuk menggunakan std::string di C++
+using namespace std;
+
+// Fungsi gotoxy tidak umum digunakan di C++ standar, 
+// untuk contoh ini kita tidak menggunakan gotoxy agar kodemu portable dan sederhana.
+
+int main() {
+    // Contoh char array (array karakter) di C++ mirip dengan di C, tapi biasanya kita prefer std::string
+    char var1[] = "Kak Fiona cantik sekali :D";  // Deklarasi array char dengan string literal
+    cout << var1 << endl;                         // Menampilkan string dari char array
+    cout << "Panjang string adalah " << strlen(var1) << endl;  // strlen masih bisa digunakan untuk char array
+
+    // Namun di C++ lebih disarankan menggunakan std::string karena lebih aman dan mudah
+    string var2;
+    cout << "Masukkan kata: ";
+    getline(cin, var2);                           // Membaca input string dengan spasi sampai enter
+    cout << "Panjang string = " << var2.size() << endl;  // Menghitung panjang string dengan .size()
+
+    // Menyalin string menggunakan char array dengan strcpy (perlu <cstring>), tapi di C++ gunakan assignment string
+    char simpan[255];
+    strcpy(simpan, "pacarnya Krista");            // strcpy masih bisa dipakai untuk char array
+    cout << "Halo, saya adalah " << simpan << endl;
+
+    // Menyalin isi string menggunakan std::string cukup assignment biasa
+    string nama;
+    string save = "Mahasiswa FTI UKSW";
+
+    cout << "Masukkan nama: ";
+    getline(cin, nama);                           // Input string nama dengan getline agar bisa dengan spasi
+    save = nama;                                 // Assignment langsung ke string lain
+    cout << "Isi save = " << save << endl;
+    cout << "Isi nama = " << nama << endl;
+
+    // Menggabungkan dua string menggunakan char array dengan strcat (perlu <cstring>), tapi pakai + atau += di string
+    string input1, input2;
+    cout << "Masukkan inputan 1: ";
+    getline(cin, input1);
+    cout << "Masukkan inputan 2: ";
+    getline(cin, input2);
+    input1 += input2;                            // Menggabungkan string dengan operator +=
+    cout << "Hasil gabungan: " << input1 << endl;
+    cout << "Panjang string gabungan: " << input1.size() << endl;
+
+    // Membandingkan dua string menggunakan strcmp di char array, tapi di string cukup operator ==
+    string kata;
+    cout << "Masukkan kata: ";
+    getline(cin, kata);
+
+    if (kata == "asdosganteng") {
+        cout << "Kata asdosganteng ditemukan" << endl;
+    } else {
+        cout << "Kata yang dituju tidak ditemukan" << endl;
+    }
+
+    // Mencari substring dalam string std::string menggunakan fungsi find
+    string teks;
+    string cari = "graceful";
+
+    cout << "Silahkan inputkan kalimat: ";
+    getline(cin, teks);
+
+    if (teks.find(cari) != string::npos) {     // Jika substring ditemukan
+        cout << "Ada tulisan " << cari << endl;
+    } else {
+        cout << "Tidak ada tulisan " << cari << endl;
+    }
+
+    return 0;
+}
