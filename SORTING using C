@@ -1,0 +1,224 @@
+<============================ BUBBLE SORTING ============================>
+#include <stdio.h>
+
+// Function to swap two integers by pointer reference
+void swap(int *a, int *b) {
+    int tmp = *a;  // Store value of a in tmp
+    *a = *b;       // Assign value of b to a
+    *b = tmp;      // Assign stored tmp value to b (swap complete)
+}
+
+// Function to perform Bubble Sort in ascending order
+void bubbleSortAscend(int a[], int n) {
+    for(int i = 0; i < n-1; i++) {            // Loop over each element (except last)
+        for(int j = 0; j < n-i-1; j++) {      // Loop to compare pairs, shrinking each pass
+            if(a[j] > a[j+1]) {                // If current item is greater than next
+                swap(&a[j], &a[j+1]);          // Swap to bring larger values toward end
+            }
+        }
+    }
+}
+
+// Function to perform Bubble Sort in descending order
+void bubbleSortDescend(int a[], int n) {
+    for(int i = 0; i < n-1; i++) {            
+        for(int j = 0; j < n-i-1; j++) {      
+            if(a[j] < a[j+1]) {                // Reverse comparison for descending order
+                swap(&a[j], &a[j+1]);          
+            }
+        }
+    }
+}
+
+// Utility function to print array contents neatly
+void printArray(int a[], int n) {
+    printf("[ ");
+    for(int i = 0; i < n; ++i) {
+        printf("%d", a[i]);
+        if(i < n-1) {
+            printf(", ");
+        }
+    }
+    printf(" ]\n");
+}
+
+// Main function: Entry point for Bubble Sort demo
+int main(void) {
+    int n;
+    printf("BUBBLE SORT ASCENDING & DESCENDING\n\n");
+    
+    // Input number of elements to sort
+    printf("Masukkan jumlah data yang ingin dimasukkan: ");
+    scanf("%d", &n);
+
+    int data[n];    // Declare array of n elements
+    
+    // Input elements from user
+    printf("Masukkan %d data (integer):\n", n);
+    for(int i = 0; i < n; i++) {
+        scanf("%d", &data[i]);
+    }
+
+    // Sort ascending using Bubble Sort
+    bubbleSortAscend(data, n);
+    printf("Data yang telah diurutkan secara ascending:\n");
+    printArray(data, n);
+
+    // Sort descending using Bubble Sort
+    bubbleSortDescend(data, n);
+    printf("Data yang telah diurutkan secara descending:\n");
+    printArray(data, n);
+
+    return 0;
+}
+
+<============================ INSERTION SORTING ============================>
+#include <stdio.h>
+
+// Function to perform Insertion Sort in ascending order
+void insertionSortAscend(int a[], int n) {
+    for(int i = 0; i < n; i++) {
+        int tmp = a[i];   // Store current element as key
+        int j = i;
+        // Shift all larger elements up one position to make space for tmp
+        while(j > 0 && a[j-1] > tmp) {
+            a[j] = a[j-1];  // Shift element up
+            j--;
+        }
+        a[j] = tmp;        // Place key in its correct sorted position
+    }
+}
+
+// Function to perform Insertion Sort in descending order
+void insertionSortDescend(int a[], int n) {
+    for(int i = 0; i < n; i++) {
+        int tmp = a[i];   // Store current element as key
+        int j = i;
+        // Shift all smaller elements up one position
+        while(j > 0 && a[j-1] < tmp) {
+            a[j] = a[j-1];  
+            j--;
+        }
+        a[j] = tmp;      // Place key in sorted position
+    }
+}
+
+// Utility function to print the array contents
+void printArray(int a[], int n) {
+    printf("[ ");
+    for(int i = 0; i < n; ++i) {
+        printf("%d", a[i]);
+        if(i < n-1) {
+            printf(", ");
+        }
+    }
+    printf(" ]\n");
+}
+
+// Main function: Entry point for Insertion Sort demo
+int main(void) {
+    int n;
+    printf("INSERTION SORT ASCENDING & DESCENDING\n\n");
+
+    // Input number of elements
+    printf("Masukkan jumlah data yang ingin dimasukkan: ");
+    scanf("%d", &n);
+
+    int data[n];    // Declare array
+
+    // Input the elements to sort
+    printf("Masukkan %d data (integer):\n", n);
+    for(int i = 0; i < n; i++) {
+        scanf("%d", &data[i]);
+    }
+
+    // Sort ascending using Insertion Sort
+    insertionSortAscend(data, n);
+    printf("Data yang telah diurutkan secara ascending:\n");
+    printArray(data, n);
+
+    // Sort descending using Insertion Sort
+    insertionSortDescend(data, n);
+    printf("Data yang telah diurutkan secara descending:\n");
+    printArray(data, n);
+
+    return 0;
+}
+
+<============================ SELECTION SORTING ============================>
+#include <stdio.h>
+
+// Function to swap two integers using pointers
+void swap(int *a, int *b) {
+    int tmp = *a;  // Temporary store a
+    *a = *b;       // a gets b's value
+    *b = tmp;      // b gets tmp (original a)
+}
+
+// Function to perform Selection Sort in ascending order
+void selectionSortAscend(int a[], int n) {
+    for(int i = 0; i < n-1; i++) {
+        int min = i;  // Assume current i is minimum
+        for(int j = i+1; j < n; j++) {
+            if(a[min] > a[j]) { // Found smaller element
+                min = j;        // Update index of minimum element
+            }
+        }
+        swap(&a[min], &a[i]);  // Swap smallest found with current position
+    }
+}
+
+// Function to perform Selection Sort in descending order
+void selectionSortDescend(int a[], int n) {
+    for(int i = 0; i < n-1; i++) {
+        int max = i;  // For descending, track max element index
+        for(int j = i+1; j < n; j++) {
+            if(a[max] < a[j]) { // Found larger element
+                max = j;        // Update index of maximum
+            }
+        }
+        swap(&a[max], &a[i]);  // Swap largest found with current position
+    }
+}
+
+// Utility function to print array contents
+void printArray(int a[], int n) {
+    printf("[ ");
+    for(int i = 0; i < n; ++i) {
+        printf("%d", a[i]);
+        if(i < n-1) {
+            printf(", ");
+        }
+    }
+    printf(" ]\n");
+}
+
+// Main function: Entry point for Selection Sort demo
+int main(void) {
+    int n;
+    printf("SELECTION SORT ASCENDING & DESCENDING\n\n");
+
+    // Input number of elements
+    printf("Masukkan jumlah data yang ingin dimasukkan: ");
+    scanf("%d", &n);
+
+    int data[n];   // Declare array
+
+    // Input the elements
+    printf("Masukkan %d data (integer):\n", n);
+    for(int i = 0; i < n; i++) {
+        scanf("%d", &data[i]);
+    }
+
+    // Sort ascending using Selection Sort
+    selectionSortAscend(data, n);
+    printf("Data yang telah diurutkan secara ascending:\n");
+    printArray(data, n);
+
+    // Sort descending using Selection Sort
+    selectionSortDescend(data, n);
+    printf("Data yang telah diurutkan secara descending:\n");
+    printArray(data, n);
+
+    return 0;
+}
