@@ -1,0 +1,133 @@
+#include <iostream>   // Library standar input-output C++
+#include <cstdlib>    // Library utilitas standar (untuk system())
+using namespace std;
+
+// **Variabel global**: dapat diakses dari seluruh fungsi dalam file ini
+int bilangan = 100;  
+
+// Deklarasi fungsi (prototipe fungsi)
+void penjumlahan();
+void pengurangan();
+void perkalian();
+void pembagian();
+void cetak();
+int fungsi(int a, int b);
+
+int main() {
+    // Menampilkan nilai dari variabel global 'bilangan'
+    cout << "Bilangan variabel global = " << bilangan << endl;  
+
+    // **Variabel lokal**: hanya bisa diakses di dalam fungsi main(), menyembunyikan variabel global dengan nama sama
+    int bilangan = 20;  
+    cout << "Bilangan variabel lokal = " << bilangan << "\n\n";
+
+    int pilih;  // Variabel lokal untuk menyimpan pilihan menu dari user
+    do {
+        // Menampilkan menu operasi
+        cout << "Menu Operasi:" << endl;
+        cout << "1. Penjumlahan" << endl;
+        cout << "2. Pengurangan" << endl;
+        cout << "3. Perkalian" << endl;
+        cout << "4. Pembagian" << endl;
+        cout << "5. Cetak contoh fungsi" << endl;
+        cout << "6. Contoh fungsi hitung (fungsi)" << endl;
+        cout << "0. Keluar" << endl;
+        cout << "Masukkan pilihan anda: ";
+        cin >> pilih;  // Membaca input pilihan user
+
+        switch(pilih) {
+            case 1: 
+                penjumlahan();  // Panggil fungsi penjumlahan
+                break;
+            case 2: 
+                pengurangan();  // Panggil fungsi pengurangan
+                break;
+            case 3: 
+                perkalian();    // Panggil fungsi perkalian
+                break;
+            case 4: 
+                pembagian();    // Panggil fungsi pembagian
+                break;
+            case 5: 
+                cetak();        // Panggil fungsi cetak contoh
+                break;
+            case 6: {
+                int a, b, hasil;  
+                cout << "Masukkan nilai a dan b: ";
+                cin >> a >> b;  // Membaca nilai a dan b dari input user
+                hasil = fungsi(a, b);  // Memanggil fungsi dengan parameter a dan b
+                cout << "Hasil fungsi dengan a*2 + b*2 = " << hasil << endl;  
+                break;
+            }
+            case 0: 
+                cout << "Program selesai." << endl;  // Keluar program
+                break;
+            default:
+                cout << "Pilihan tidak tersedia, coba lagi." << endl;  // Pesan error input tidak valid
+        }
+
+        cout << endl;
+
+        system("pause");  // Menunggu user menekan tombol (Windows)
+        system("cls");    // Bersihkan layar (Windows)
+
+    } while (pilih != 0);  // Loop sampai pilih = 0 (keluar)
+
+    return 0;  // Akhiri fungsi main()
+}
+
+// Definisi fungsi-fungsi:
+
+void penjumlahan() {
+    int angka1, angka2, hasil;  //variabel lokal penjumlahan
+    cout << "Masukkan angka pertama: ";
+    cin >> angka1;
+    cout << "Masukkan angka kedua: ";
+    cin >> angka2;
+    hasil = angka1 + angka2;  
+    cout << "Hasil dari " << angka1 << " + " << angka2 << " = " << hasil << endl;
+}
+
+void pengurangan() {
+    int angka1, angka2, hasil;  //variabel lokal pengurangan
+    cout << "Masukkan angka pertama: ";
+    cin >> angka1;
+    cout << "Masukkan angka kedua: ";
+    cin >> angka2;
+    hasil = angka1 - angka2;  
+    cout << "Hasil dari " << angka1 << " - " << angka2 << " = " << hasil << endl;
+}
+
+void perkalian() {
+    float angka1, angka2, hasil;  //variabel lokal perkalian
+    cout << "Masukkan angka pertama: ";
+    cin >> angka1;
+    cout << "Masukkan angka kedua: ";
+    cin >> angka2;
+    hasil = angka1 * angka2;  
+    cout << "Hasil dari " << angka1 << " * " << angka2 << " = " << hasil << endl;
+}
+
+void pembagian() {
+    float angka1, angka2, hasil;  //variabel lokal pembagian
+    cout << "Masukkan angka pertama: ";
+    cin >> angka1;
+    cout << "Masukkan angka kedua: ";
+    cin >> angka2;
+    if (angka2 != 0) {  // Cek pembagi tidak 0
+        hasil = angka1 / angka2;  
+        cout << "Hasil dari " << angka1 << " / " << angka2 << " = " << hasil << endl;
+    } else {
+        cout << "Error: Pembagian dengan nol tidak diperbolehkan." << endl;
+    }
+}
+
+void cetak() {
+    cout << "Ini adalah contoh fungsi cetak()." << endl;  
+}
+
+int fungsi(int a, int b) {
+    a = a * 2;  
+    b = b * 2;  
+    return a + b;  
+}
