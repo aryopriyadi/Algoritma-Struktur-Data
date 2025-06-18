@@ -1,0 +1,94 @@
+==================DO WHILE - SWITCH CASE - FOR (1)===============
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <windows.h>
+
+void gotoxy(int x, int y){//fungsi goto untuk dipanggil ke main
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),coord);
+}
+
+int main(){
+    int i, j, n, m;
+    do{
+        printf("1. menu 1\n");
+        printf("2. menu 2\n");
+        printf("input pilihan : ");
+        scanf("%d",&n);
+        switch(n){
+            case 1:
+                system("cls");
+                printf("Masukan input : ");
+                scanf("%d",&m);
+                for(i=0; i<=m; i++){
+                    for(j=1; j<=i; j++){
+                        printf("*");
+                    }printf("\n");
+                }break;
+            case 2:
+                system("cls");
+                printf("ini menu 2\n");
+                break;
+            default :
+                continue;
+        }
+    }while(n != 3);
+}
+
+
+==================DO WHILE - SWITCH CASE - FOR (2)===============
+
+
+#include <stdio.h>
+#include <conio.h>
+
+int main(){
+    int a, b, c, d, e;
+    do{
+        do{
+            printf("Masukkan Angka Sebuah Angka Lebih Dari 0 Kurang Dari Sama dengan 10 : ");
+            scanf("%d",&d);
+            while(d>10||d<0){
+                printf("Input Anda Melebihi 10 Atau Kurang Dari 0 Silahkan Ulangi\n");
+                break;
+            }while(d==0){
+                printf("Input Anda Sama Dengan 0 Silahkan Ulangi\n");
+                break;
+            }
+        }while(d>10||d<=0);
+        for (a=d*2;a>0;a--){
+            for (b=1;b<=a;b++){
+                printf("*");
+            }for (c=a;c<=d*2;c++){
+                printf(" ");
+            }for (c=a;c<=(d*2)-1;c++){
+                printf(" ");
+            }for (b=1;b<=a;b++){
+                printf("*");
+            }printf("\n");
+        }for (a=2;a<=d*2;a++){
+            for (b=1;b<=a;b++){
+                printf("*");
+            }for (c=d*2;c>=a;c--){
+                printf(" ");
+            }for (c=(d*2)-1;c>=a;c--){
+                printf(" ");
+            }for (b=1;b<=a;b++){
+                printf("*");
+            }printf("\n");
+        }printf("Tekan Tombol Apapun Untuk Melanjutkan\n");getch();
+        do{
+            printf("Apakah Anda Ingin Mengulangi ? 1/0: ");
+            scanf("%d",&e);
+            while(e==0){
+                break;
+            }while(e!=0&&e!=1){
+                printf("Pilihan Anda Salah Silahkan Ulangi!\n");
+                break;
+            }
+        }while (e!=0 && e!=1);
+    }while(e==1);
+}
