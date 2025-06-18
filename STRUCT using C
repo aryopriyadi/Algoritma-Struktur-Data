@@ -1,0 +1,150 @@
+<============================ KODE PROGRAM 1 ARYO ============================>
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 3
+
+struct Jurusan{
+    char prodi[20];
+    char peminatan[20];
+};
+
+typedef struct Mahasiswa{
+    char nama[50];
+    long nim;
+    struct Jurusan jurusan;
+} mahasiswa;
+
+void main(){
+    mahasiswa mhs[MAX];
+
+    //    mhs.nama = "Aryo";
+    //    strcpy(mhs.nama, "Aryo");
+    //    mhs.nim = 672021121;
+
+    for(int i=0; i < MAX; i++){
+        printf("Data Mahasiswa Ke-%d\n", i+1);
+        printf("Masukan Nama : ");
+        gets(mhs[i].nama);
+//        scanf("%[^\n]s", &mhs[i].nama);
+
+        printf("Masukan Nim  : ");
+        scanf("%d", &mhs[i].nim);
+        fflush(stdin);
+
+        printf("Masukan Prodi: ");
+        gets(mhs[i].jurusan.prodi);
+//        scanf("%[^\n]s", &mhs[i].jurusan.prodi);
+
+        printf("Masukan Peminatan : ");
+        gets(mhs[i].jurusan.peminatan);
+//        scanf("%[^\n]s", &mhs[i].jurusan.peminatan);
+    }
+
+    tampilkan(mhs);
+}
+
+void tampilkan(mahasiswa mhs[MAX]){
+//    printf("Nama : %s\n", mhs.nama);
+//    printf("Nim  : %d\n", mhs.nim);
+//    printf("Prodi: %s\n", mhs.jurusan.prodi);
+//    printf("Peminatan : %s\n", mhs.jurusan.peminatan);
+
+    for(int i=0; i < MAX; i++){
+        printf("\nData Mahasiswa Ke-%d\n", i+1);
+        printf("Nama : %s\n", mhs[i].nama);
+        printf("Nim  : %d\n", mhs[i].nim);
+        printf("Prodi: %s\n", mhs[i].jurusan.prodi);
+        printf("Peminatan : %s\n", mhs[i].jurusan.peminatan);
+    }
+}
+
+<============================ KODE PROGRAM 2 ARYO ============================>
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void main(){
+    struct zodiak {
+        char nama[11];
+        int tgl_awal;
+        int bln_awal;
+        int tgl_akhir;
+        int bln_akhir;
+    };
+
+    struct zodiak bintang = {"Scorpio", 23, 10, 21, 11};
+
+    int tgl_lahir, bln_lahir, thn_lahir;
+
+    printf("Masukan tgl lahir anda (d-m-y): ");
+    scanf("%d %d %d", &tgl_lahir, &bln_lahir, &thn_lahir);
+
+    if((tgl_lahir >= bintang.tgl_awal && bln_lahir == bintang.bln_awal) || (tgl_lahir <= bintang.tgl_akhir && bln_lahir == bintang.bln_akhir)){
+        printf("Bintang Anda adalah %s\n", bintang.nama);
+    }else{
+        printf("Bintang Anda bukan %s\n", bintang.nama);
+    }
+}
+
+<============================ KODE PROGRAM 3 MATTHEW ============================>
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+//struct  = kumpulan  beragam tipe data yang dibungkus menjadi 1 variabel
+//Typedef adalah perintah atau keyword bahasa C yang dipakai untuk memberikan nama lain atau alias dari tipe data.
+
+//penulisan struct
+    /*
+           struct namaStruct{
+                tipeData namaVar1;
+                tipeData namaVar2;
+                dst..
+            } namaObject;
+
+    Pemanggilan struct
+            struct namaStruct namaObject;
+    */
+
+//cara 1 membuat variabel struct
+
+     struct Address {
+        char kota[30];
+        int noRumah;
+    };
+    struct mahasiswa {
+            char nama[20];
+            int nim;
+           struct Address addr;
+        }m1,m2,m3[2];
+
+    int main()
+    {
+        typedef int bilBulat;
+        int a = 23;
+        bilBulat c = 99;
+        printf("%d\n",c);
+     // strcpy(addr.kota,"Salatiga");
+
+     /*   addr.noRumah = 25;
+        printf("Kota:%s\n",addr.kota);
+        printf("Nomor rumah:%d\n",addr.noRumah);
+        */
+
+        //cara 2 membuat variabel struct
+        struct mahasiswa mhs;
+
+        strcpy(m3[0].nama,"anton");
+        printf("\n%s",m3[0].nama);
+        m3[0].nim = 12345;
+        printf("\nNIM:%d\n",m3[0].nim);
+
+        strcpy(m1.nama,"memet");
+        m1.nim = 672021021;
+        strcpy(m1.addr.kota,"Solo");
+        m1.addr.noRumah = 456;
+        printf("\nNama:%s\n",m1.nama);
+         printf("\nNIM:%d\n",m1.nim);
+         printf("Asal Kota:%s\n",m1.addr.kota);
+         printf("Nomor rumah:%d\n",m1.addr.noRumah);
+}
