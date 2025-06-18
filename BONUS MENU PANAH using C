@@ -1,0 +1,228 @@
+<============================ Kode Program 1 (tanpa memanggil Goto) ============================>
+#include <stdio.h>
+#include <windows.h>
+#include <stdlib.h>
+#include <conio.h>
+
+void gotoxy(int x, int y){
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+void load(){
+    int x,waktu;
+    system("cls");
+    system("COLOR F8");
+    printf("LOADING ");
+    sleep(1);
+    for(waktu=0;waktu<=0;waktu++){
+            for(x=0;x<5;x++){
+                printf("*");
+                sleep(1);
+            }printf("\33[2K\r");
+        }system("cls");
+        return(0);
+}
+
+void panah(int rp,int ap){
+    if(rp == ap){
+        printf("==>");
+    }else{
+        printf("   ");
+    }
+}
+
+void main(){
+    system("cls");
+    system("COLOR F8");
+    gotoxy(2,2);
+    printf("===========================");
+    gotoxy(2,3);
+    printf("Tugas Quiz Stack and Queue");
+    gotoxy(2,4);
+    printf("===========================");
+    gotoxy(2,10);
+    printf("===========================");
+    int posisi = 1;
+    int tekan = 0;
+    while(tekan != 13){ //kode ascii ke-13 = Carriage Return/Pergantian Baris
+        gotoxy(2,5);
+        panah(1,posisi); printf(" 1. Menu 1");
+        gotoxy(2,6);
+        panah(2,posisi); printf(" 2. Menu 2");
+        gotoxy(2,7);
+        panah(3,posisi); printf(" 3. Menu 3");
+        gotoxy(2,8);
+        panah(4,posisi); printf(" 4. Menu 4");
+        gotoxy(2,9);
+        panah(5,posisi); printf(" 5. Menu 5");
+        tekan = getch();
+        if(tekan == 80 && posisi !=5){
+            posisi++;
+        }else if(tekan == 72 && posisi !=1){
+            posisi--;
+        }else{
+            posisi = posisi;
+        }
+    }int x = posisi;
+    int a;
+    int b;
+    switch(x){
+        case 1 :
+            system("cls");
+            system("COLOR F8");
+            printf("Halo Adikkss :v \n");
+            system("pause");
+            main(0);
+            break;
+        case 2 :
+            system("cls");
+            system("COLOR F8");
+            printf("Hai Dunia Gembiralah :D \n");
+            system("pause");
+            main(0);
+            break;
+        case 3:
+            system("cls");
+            system("COLOR F8");
+            printf("Selamat Hari Jumat, GBU :3 \n");
+            system("pause");
+            main(0);
+            break;
+        case 4:
+            system("cls");
+            system("COLOR F8");
+            printf("Jangan lupa makan, kesehatanmu loo :p \n");
+            system("pause");
+            main(0);
+            break;
+        case 5 :
+            system("cls");
+            system("COLOR F8");
+            printf("Udah weh pulang sana :'v \n");
+            system("pause");
+            main(0);
+            break;
+    }
+}
+
+<============================ Kode Program 2 (memanggil Goto dari Main) ============================>
+#include <stdio.h>
+#include <windows.h>
+#include <stdlib.h>
+#include <conio.h>
+
+// Fungsi gotoxy untuk mengatur posisi kursor pada console (x, y)
+// Menggunakan fungsi Windows API SetConsoleCursorPosition
+void gotoxy(int x, int y){
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+// Fungsi load untuk menampilkan animasi loading sederhana
+void load(){
+    int x, waktu;
+    system("cls");      // Bersihkan layar
+    system("COLOR F8"); // Set warna console
+    printf("LOADING ");
+    sleep(1);
+    for(waktu=0; waktu<=0; waktu++){  // Loop ini hanya satu kali
+        for(x=0; x<5; x++){
+            printf("*");  // Print bintang satu per satu
+            sleep(1);    // Pause selama 1 detik
+        }
+        printf("\33[2K\r"); // Clear line dan kembalikan cursor ke awal baris (ANSI escape)
+    }
+    system("cls");  // Bersihkan layar kembali setelah loading
+    return;
+}
+
+// Fungsi panah untuk menampilkan tanda panah "==>" di sebelah menu yang sedang dipilih
+void panah(int rp, int ap){
+    if(rp == ap){
+        printf("==>");   // Jika posisi pilihan (rp) sama dengan posisi panah (ap), tampilkan panah
+    } else {
+        printf("   ");   // Jika tidak, tampilkan spasi kosong
+    }
+}
+
+// Fungsi utama program dengan pointer menu dan penggunaan goto untuk loop menu
+int main() {
+    int posisi = 1;  // Posisi menu yang sedang dipilih, awalnya 1
+    int tekan = 0;   // Variabel untuk menyimpan input tombol keyboard
+
+    // Array pointer ke fungsi menu, memudahkan menggunakan pointer fungsi
+    void (*menuPointer[5])() = {menu1, menu2, menu3, menu4, menu5};
+
+MENU_START:   // Label untuk goto agar kembali ke menu utama
+    system("cls");
+    system("COLOR F8");
+    gotoxy(2, 2);
+    printf("===========================");
+    gotoxy(2, 3);
+    printf("Tugas Quiz Stack and Queue");
+    gotoxy(2, 4);
+    printf("===========================");
+
+    // Tampilkan menu dengan panah di samping sesuai posisi pilihan
+    while(tekan != 13) {   // 13 = tombol Enter (Carriage Return)
+        for(int i = 1; i <= 5; i++){
+            gotoxy(2, 4 + i);
+            panah(i, posisi);  // Tampilkan tanda panah di menu yang aktif (berposisi)
+            printf(" %d. Menu %d\n", i, i);
+        }
+
+        tekan = getch();   // Ambil input karakter tanpa menunggu enter
+        if(tekan == 80 && posisi < 5){  
+            posisi++;   // Tombol panah bawah (ASCII 80) naikkan posisi menu
+        } else if(tekan == 72 && posisi > 1){
+            posisi--;   // Tombol panah atas (ASCII 72) turunkan posisi menu
+        }
+    }
+
+    // Panggil fungsi menu sesuai posisi yang dipilih menggunakan pointer fungsi
+    (*menuPointer[posisi - 1])();
+    goto MENU_START;  // Kembali ke label menu utama setelah fungsi menu selesai
+
+    return 0;
+}
+
+// Definisi fungsi menu 1 sampai menu 5 yang akan dipanggil via pointer fungsi
+void menu1() {
+    system("cls");
+    system("COLOR F8");
+    printf("Halo Adikkss :v \n");
+    system("pause");
+}
+
+void menu2() {
+    system("cls");
+    system("COLOR F8");
+    printf("Hai Dunia Gembiralah :D \n");
+    system("pause");
+}
+
+void menu3() {
+    system("cls");
+    system("COLOR F8");
+    printf("Selamat Hari Jumat, GBU :3 \n");
+    system("pause");
+}
+
+void menu4() {
+    system("cls");
+    system("COLOR F8");
+    printf("Jangan lupa makan, kesehatanmu loo :p \n");
+    system("pause");
+}
+
+void menu5() {
+    system("cls");
+    system("COLOR F8");
+    printf("Udah weh pulang sana :'v \n");
+    system("pause");
+}
