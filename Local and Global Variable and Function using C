@@ -1,0 +1,132 @@
+#include <stdio.h>   // Library standard input-output digunakan untuk printf dan scanf
+#include <stdlib.h>  // Library standard utility, digunakan untuk fungsi system()
+
+int bilangan = 100;  // **Variabel global**: dapat diakses dari seluruh fungsi dalam file ini
+
+// Prototipe fungsi - mendeklarasikan fungsi yang akan didefinisikan nanti di bawah main()
+void penjumlahan();
+void pengurangan();
+void perkalian();
+void pembagian();
+void cetak();
+int fungsi(int a, int b);  // Fungsi dengan parameter dan nilai kembalian (int)
+
+int main() {
+    printf("Bilangan variabel global = %d\n", bilangan);  
+    // Menampilkan nilai dari variabel global 'bilangan'
+
+    int bilangan = 20;  // **Variabel lokal**: hanya bisa diakses di dalam fungsi main(), menyembunyikan variabel global dengan nama sama
+    printf("Bilangan variabel lokal = %d\n\n", bilangan);
+    // Menampilkan nilai variabel lokal 'bilangan' yang berbeda dengan variabel global
+
+    int pilih;  // Variabel lokal untuk menyimpan pilihan menu dari user
+    do {
+        // Menampilkan menu operasi
+        printf("Menu Operasi:\n");
+        printf("1. Penjumlahan\n");
+        printf("2. Pengurangan\n");
+        printf("3. Perkalian\n");
+        printf("4. Pembagian\n");
+        printf("5. Cetak contoh fungsi\n");
+        printf("6. Contoh fungsi hitung (fungsi)\n");
+        printf("0. Keluar\n");
+        printf("Masukkan pilihan anda: ");
+        scanf("%d", &pilih);  // Membaca input pilihan dari user dan disimpan di variabel lokal 'pilih'
+
+        // Struktur kendali untuk mengeksekusi fungsi sesuai pilihan user
+        switch(pilih) {
+            case 1: 
+                penjumlahan();  // Panggil fungsi penjumlahan
+                break;
+            case 2: 
+                pengurangan();  // Panggil fungsi pengurangan
+                break;
+            case 3: 
+                perkalian();    // Panggil fungsi perkalian
+                break;
+            case 4: 
+                pembagian();    // Panggil fungsi pembagian
+                break;
+            case 5: 
+                cetak();        // Panggil fungsi cetak contoh
+                break;
+            case 6: {
+                int a, b, hasil;  // Variabel lokal dalam blok case 6 untuk input dan hasil fungsi
+                printf("Masukkan nilai a dan b: ");
+                scanf("%d %d", &a, &b);  // Membaca nilai a dan b dari input user
+                hasil = fungsi(a, b);  // Memanggil fungsi dengan parameter a dan b, hasil disimpan di variabel lokal 'hasil'
+                printf("Hasil fungsi dengan a*2 + b*2 = %d\n", hasil);  // Menampilkan hasil fungsi
+                break;
+            }
+            case 0: 
+                printf("Program selesai.\n");  // Membutuhkan keluar program
+                break;
+            default:
+                printf("Pilihan tidak tersedia, coba lagi.\n");  // Pesan error jika input tidak valid
+        }
+
+        printf("\n");
+
+        system("pause");  // Berhenti menunggu aksi user (tekan tombol), khusus Windows
+        system("cls");    // Bersihkan layar untuk mengulang menu, khusus Windows
+
+    } while (pilih != 0);  // Loop berjalan terus sampai pilih = 0 (keluar)
+
+    return 0;  // Mengakhiri fungsi main()
+}
+
+// Berikut adalah fungsi-fungsi yang dipanggil pada switch-case di atas:
+
+void penjumlahan() {
+    int angka1, angka2, hasil;  // Variabel lokal dalam fungsi penjumlahan
+    printf("Masukkan angka pertama: ");
+    scanf("%d", &angka1);  // Input angka pertama
+    printf("Masukkan angka kedua: ");
+    scanf("%d", &angka2);  // Input angka kedua
+    hasil = angka1 + angka2;  // Operasi penjumlahan
+    printf("Hasil dari %d + %d = %d\n", angka1, angka2, hasil);  // Output hasil
+}
+
+void pengurangan() {
+    int angka1, angka2, hasil;  // Variabel lokal dalam fungsi pengurangan
+    printf("Masukkan angka pertama: ");
+    scanf("%d", &angka1);  // Input angka pertama
+    printf("Masukkan angka kedua: ");
+    scanf("%d", &angka2);  // Input angka kedua
+    hasil = angka1 - angka2;  // Operasi pengurangan
+    printf("Hasil dari %d - %d = %d\n", angka1, angka2, hasil);  // Output hasil
+}
+
+void perkalian() {
+    float angka1, angka2, hasil;  // Variabel lokal float untuk operasi perkalian
+    printf("Masukkan angka pertama: ");
+    scanf("%f", &angka1);  // Input angka pertama float
+    printf("Masukkan angka kedua: ");
+    scanf("%f", &angka2);  // Input angka kedua float
+    hasil = angka1 * angka2;  // Operasi perkalian
+    printf("Hasil dari %.2f * %.2f = %.2f\n", angka1, angka2, hasil);  // Output hasil dengan format float 2 desimal
+}
+
+void pembagian() {
+    float angka1, angka2, hasil;  // Variabel lokal float untuk operasi pembagian
+    printf("Masukkan angka pertama: ");
+    scanf("%f", &angka1);  // Input angka pertama
+    printf("Masukkan angka kedua: ");
+    scanf("%f", &angka2);  // Input angka kedua
+    if (angka2 != 0) {  // Cek pembagi tidak 0 untuk menghindari error
+        hasil = angka1 / angka2;  // Operasi pembagian
+        printf("Hasil dari %.2f / %.2f = %.2f\n", angka1, angka2, hasil);
+    } else {
+        printf("Error: Pembagian dengan nol tidak diperbolehkan.\n");  // Pesan error jika pembagi nol
+    }
+}
+
+void cetak() {
+    printf("Ini adalah contoh fungsi cetak().\n");  // Contoh fungsi tanpa parameter dan tanpa nilai balik (void)
+}
+
+int fungsi(int a, int b) {
+    a = a * 2;  // Operasi pada parameter a (variabel lokal fungsi)
+    b = b * 2;  // Operasi pada parameter b (variabel lokal fungsi)
+    return a + b;  // Mengembalikan hasil penjumlahan a dan b, nilai balik dari fungsi
+}
