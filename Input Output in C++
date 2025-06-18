@@ -1,0 +1,36 @@
+#include <iostream>   // for input/output stream
+#include <windows.h>  // for Windows console functions
+using namespace std;
+
+// Function to move the cursor to a specific position on the console screen
+void gotoxy(int x, int y) {
+    COORD coord;          // Create a COORD structure to hold coordinates
+    coord.X = x;          // Set X coordinate
+    coord.Y = y;          // Set Y coordinate
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord); // Set cursor position
+}
+
+int main() {
+    system("cls"); // Clear the console screen
+
+    float panjang, lebar, luas, keliling;
+
+    gotoxy(30, 10); 
+    cout << "Masukkan panjang : ";  // Prompt for length (panjang)
+    cin >> panjang;                 // Read length input
+
+    gotoxy(30, 11);
+    cout << "Masukkan lebar : ";    // Prompt for width (lebar)
+    cin >> lebar;                  // Read width input
+
+    luas = panjang * lebar;        // Calculate area
+    keliling = 2 * (panjang + lebar); // Calculate perimeter (corrected formula)
+
+    gotoxy(30, 13);
+    cout << "Luasnya adalah : " << fixed << setprecision(2) << luas;  // Display area with 2 decimal places
+
+    gotoxy(30, 14);
+    cout << "Kelilingnya adalah : " << fixed << setprecision(2) << keliling << "\n"; // Display perimeter
+
+    return 0;  // End of program
+}
