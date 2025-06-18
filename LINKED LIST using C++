@@ -1,0 +1,194 @@
+/*
+Linked List memiliki fungsi yang kurang lebih mirip seperti array, tetapi linked list memiliki keunggulan dibandingkan array terutama dalam hal efisiensi memori. 
+Jika dalam array kita harus menetapkan ukuran banyak data yang akan digunakan, lain halnya dalam menggunakan linked list, kita tidak perlu menentukan ukuran banyaknya data tersebut. 
+Kita dapat mengatur alokasi memori sesuai data yang ditambahkan atau dihapus secara dinamis. Linked list dapat kita kembangkan dengan struktur data Stack dan atau Queue.
+*/
+
+#include <iostream>
+#include <string>
+
+// Definisi kelas Mahasiswa yang akan dijadikan node linked list
+class Mahasiswa {
+public:
+    std::string nama;
+    std::string nim;
+    std::string fakultas;
+    std::string hobi;
+    int umur;
+    Mahasiswa* next;  // Pointer ke node berikutnya dalam linked list
+
+    // Konstruktor default untuk inisialisasi
+    Mahasiswa(std::string nama, std::string nim, std::string fakultas, std::string hobi, int umur) {
+        this->nama = nama;
+        this->nim = nim;
+        this->fakultas = fakultas;
+        this->hobi = hobi;
+        this->umur = umur;
+        this->next = nullptr;
+    }
+};
+
+// Pointer global ke node pertama dan terakhir linked list
+Mahasiswa* head = nullptr;
+Mahasiswa* tail = nullptr;
+
+// Fungsi untuk melihat semua data mahasiswa dalam linked list
+void lihatData() {
+    if (head == nullptr) { // Linked list kosong
+        std::cout << "Belum ada Data, silahkan input dulu!\n\n";
+        return;
+    }
+    Mahasiswa* current = head; // Mulai dari kepala linked list
+    int i = 1;
+    while (current != nullptr) { // Traversing sampai akhir linked list
+        std::cout << "Data ke - " << i << std::endl;
+        std::cout << "Nama     : " << current->nama << std::endl;
+        std::cout << "NIM      : " << current->nim << std::endl;
+        std::cout << "Fakultas : " << current->fakultas << std::endl;
+        std::cout << "Hobi     : " << current->hobi << std::endl;
+        std::cout << "Umur     : " << current->umur << std::endl;
+        std::cout << std::endl;
+        current = current->next;  // Pindah ke node berikutnya
+        i++;
+    }
+}
+
+// Fungsi untuk menambah data baru ke dalam linked list
+void tambahData() {
+    std::string nama, nim, fakultas, hobi;
+    int umur;
+
+    // Input data mahasiswa dari pengguna
+    std::cout << "Nama     : "; std::getline(std::cin, nama);
+    std::cout << "NIM      : "; std::getline(std::cin, nim);
+    std::cout << "Fakultas : "; std::getline(std::cin, fakultas);
+    std::cout << "Hobi     : "; std::getline(std::cin, hobi);
+    std::cout << "Umur     : "; std::cin >> umur;
+    std::cin.ignore();  // Membersihkan \n dari input
+
+    // Membuat node baru menggunakan new
+    Mahasiswa* current = new Mahasiswa(nama, nim, fakultas, hobi, umur);
+
+    // Jika linked list kosong, node baru jadi head dan tail
+    if (head == nullptr) {
+        head = tail = current;
+    } else {
+        // Tambahkan node baru ke akhir linked list
+        tail->next = current;
+        tail = current;
+    }
+
+    std::cout << "\nData berhasil diinput\n\n";
+}
+
+// Fungsi untuk mengedit data mahasiswa berdasarkan NIM
+void editData() {
+    if (head == nullptr) {
+        std::cout << "Belum ada Data, silahkan input dulu!\n\n";
+        return;
+    }
+
+    std::string nimCari;
+    std::cout << "Cari NIM yang mau diedit : ";
+    std::getline(std::cin, nimCari);
+
+    Mahasiswa* current = head;
+    while (current != nullptr) {
+        if (current->nim == nimCari) {
+            // Tampilkan data yang ditemukan
+            std::cout << "Nama     : " << current->nama << std::endl;
+            std::cout << "NIM      : " << current->nim << std::endl;
+            std::cout << "Fakultas : " << current->fakultas << std::endl;
+            std::cout << "Hobi     : " << current->hobi << std::endl;
+            std::cout << "Umur     : " << current->umur << std::endl;
+
+            // Input data baru untuk hobi (bisa dikembangkan untuk edit field lain)
+            std::cout << "\nEDIT DATA\n";
+            std::string hobiBaru;
+            std::cout << "Hobi baru : "; std::getline(std::cin, hobiBaru);
+            current->hobi = hobiBaru;
+
+            std::cout << "\nData berhasil diedit\n\n";
+            return;
+        }
+        current = current->next;
+    }
+
+    std::cout << "\nData tidak ada\n\n"; // NIM tidak ditemukan
+}
+
+// Fungsi untuk menghapus data mahasiswa berdasarkan NIM
+void deleteData() {
+    if (head == nullptr) {
+        std::cout << "Belum ada Data, silahkan input dulu!\n\n";
+        return;
+    }
+
+    std::string nimCari;
+    std::cout << "Cari NIM yang mau dihapus : ";
+    std::getline(std::cin, nimCari);
+
+    Mahasiswa* current = head;
+    Mahasiswa* prev = nullptr;
+
+    while (current != nullptr) {
+        if (current->nim == nimCari) { // Data ditemukan
+            if (prev == nullptr) {
+                // Jika node pertama yang dihapus
+                head = current->next;
+                delete current;
+                if (head == nullptr)
+                    tail = nullptr; // Jika list jadi kosong
+            } else {
+                // Node di tengah atau akhir dihapus
+                prev->next = current->next;
+                if (current == tail) {
+                    tail = prev; // Update tail jika node terakhir dihapus
+                }
+                delete current;
+            }
+            std::cout << "\nData berhasil dihapus\n\n";
+            return;
+        }
+        prev = current;
+        current = current->next;
+    }
+
+    std::cout << "\nData tidak ada\n\n"; // NIM tidak ditemukan
+}
+
+// Fungsi utama: menampilkan menu dan interaksi pengguna
+int main() {
+    char menu;
+    do {
+        std::cout << "MENU KAMPUS\n";
+        std::cout << "1. Lihat Data\n";
+        std::cout << "2. Tambah Data\n";
+        std::cout << "3. Edit Data\n";
+        std::cout << "4. Hapus Data\n";
+        std::cout << "5. Keluar\n";
+        std::cout << "Pilihan : ";
+        std::cin >> menu;
+        std::cin.ignore(); // Membersihkan input buffer
+
+        switch (menu) {
+            case '1': lihatData(); break;
+            case '2': tambahData(); break;
+            case '3': editData(); break;
+            case '4': deleteData(); break;
+            case '5': std::cout << "Keluar dari program.\n"; break;
+            default: std::cout << "Inputan Salah\n\n"; break;
+        }
+    } while (menu != '5');
+
+    // Sebelum keluar, hapus semua node untuk mencegah memory leak
+    Mahasiswa* current = head;
+    while (current != nullptr) {
+        Mahasiswa* next = current->next;
+        delete current;
+        current = next;
+    }
+    head = tail = nullptr;
+
+    return 0;
+}
