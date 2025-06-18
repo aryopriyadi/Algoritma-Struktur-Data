@@ -1,0 +1,571 @@
+<====================== KODE PROGRAM 1 (BASIC) ======================>
+#include <stdio.h>
+#include <conio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <windows.h>
+#include <time.h>
+#define ENTER 13
+#define BKSP 8
+#define SPACE 32
+#define TAB 9
+
+struct item{
+    char productname[40], productcomp[40], c;
+    int productid;
+    int price;
+    int Qnt;
+}st;
+
+void menu(void);
+void deleteproduct(void);
+void add_item();
+void read_item();
+void search_item();
+void edit_item();
+
+void gotoxy(short x, short y){
+    COORD pos = {x, y};
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+}
+
+void main(void){
+    char choice;
+    system("cls");
+    printf("\n=================== Item CRUD System ===================");
+    printf("                                                          ");
+    printf("                                                          ");
+    printf("\n\t\tPress <1> Create Item");
+    printf("\n\t\tPress <2> Delete Item");
+    printf("\n\t\tPress <3> Search Item");
+    printf("\n\t\tPress <4> Read Items");
+    printf("\n\t\tPress <5> Edit Items");
+    printf("\n\t\tPress <6> Exit!");
+    printf("\n\n\t\tEnter your choice[1-6]");
+    scanf(" %[^\n]s", &choice);
+    system("cls");
+
+    switch (choice){
+    case '1':
+        add_item();
+        break;
+    case '2':
+        deleteproduct();
+        break;
+    case '3':
+        search_item();
+        break;
+    case '4':
+        read_item();
+        break;
+    case '5':
+        edit_item();
+        break;
+    case '6':
+        printf("System Exit");
+        exit(0);
+        break;
+
+    default:
+        printf("Invalid Choice!");
+        system("pause");
+        main();
+    }
+}
+
+void add_item(){
+    int index, valid;
+    char c;
+    int a = 0;
+    FILE *fp;
+    do{
+        system("cls");
+        printf("============ Enter Item Detail ============");
+        int ID;
+        fp = fopen("NextFile.dat", "a+");
+        if ((fp = fopen("NextFile.dat", "a+")) != NULL){
+            I:
+            printf("\nProduct Code\t :");
+            scanf("%i", &ID);
+            while (fscanf(fp, "%s %s %i %i %i", st.productname, st.productcomp, &st.price, &st.productid, &st.Qnt) != EOF){
+                if (ID == st.productid){
+                    printf("\n\tTHE Item CODE ALREADY EXIST.\n");
+                    goto I;
+                }
+            }st.productid = ID;
+        }else{
+            printf("\Item Code\t :");
+            scanf("%i", &st.productid);
+        }do{
+            fflush(stdin);
+            printf("\nItem Name\t :");
+            gets(st.productname);
+            st.productname[0] = toupper(st.productname[0]);
+            for (index = 0; index < strlen(st.productname); ++index){
+                if (isalpha(st.productname[index])){
+                    valid = 1;
+                }else{
+                    valid = 0;
+                    break;
+                }
+            }if (!valid){
+                printf("\n Name contain invalid character. Please 'Enter' again");
+                getch();
+            }
+        }while (!valid);
+        do{
+            char productcomp[40];
+            fflush(stdin);
+            printf("\nItem Company\t :");
+            gets(st.productcomp);
+            st.productcomp[0] = toupper(st.productcomp[0]);
+
+            for (index = 0; index < strlen(st.productcomp); ++index){
+                if (isalpha(st.productcomp[index])){
+                    valid = 1;
+                }else{
+                    valid = 0;
+                    break;
+                }
+            }if (!valid){
+                printf("\n Name contain invalid character. Please 'Enter' again");
+                getch();
+            }
+        }while (!valid);
+        do{
+            printf("\nPrice [10-5000]$:");
+            scanf("%i", &st.price);
+            if (st.price < 10 || st.price > 5000){
+                printf("\n\tYou Cannot Enter the price limit [10-5000].Re-Enter.");
+            }
+        }while (st.price < 10 || st.price > 5000);
+        do{
+            printf("\nQuantity [1-500]\t:");
+            scanf("%i", &st.Qnt);
+            if (st.Qnt < 1 || st.Qnt > 500){
+                printf("\n\tEnter Quantity[1-500] only.Re-Enter.");
+            }
+        }while (st.Qnt < 1 || st.Qnt > 500);
+        fp = fopen("NextFile.dat", "a");
+        fprintf(fp, "\n%s %s %i %i %i", st.productname, st.productcomp, st.price, st.productid, st.Qnt);
+        fclose(fp);
+        printf("\nPress 'Enter' to add more item and any other key to go to main menu");
+
+    }while ((c = getch()) == '\r');
+    main();
+}
+
+void search_item(){
+    char target[40];
+    int found = 0;
+    FILE *sfile;
+    sfile = fopen("NextFile.dat", "r");
+    printf("\nEnter name to search:");
+    fflush(stdin);
+    gets(target);
+    target[0] = toupper(target[0]);
+    while (!feof(sfile) && found == 0){
+        fscanf(sfile, "%s %s %i %i %i", st.productname, st.productcomp, &st.price, &st.productid, &st.Qnt);
+        if (strcmp(target, st.productname) == 0){
+            found = 1;
+        }
+    }if (found){
+        printf("\n Record found");
+        printf("\nItem Name\t\t:%s  \nItem Company\t\t:%s \nItem Price\t\t:%i \nItem ID\t\t:%i \nItem Quantity\t:%i", st.productname, st.productcomp, st.price, st.productid, st.Qnt);
+    }else{
+        printf("No Record found");
+    }fclose(sfile);
+    printf("\nPress any key to go to Main Menu!");
+    while ((st.c = getch()) == '\r');
+    main();
+}
+
+void deleteproduct(void){
+    char target[40];
+    int found = 0;
+    FILE *sfile, *tfile;
+    sfile = fopen("NextFile.dat", "r");
+    tfile = fopen("TempFile.dat", "w+");
+    printf("\n Enter name to Delete: ");
+    fflush(stdin);
+    scanf("%s", target);
+    target[0] = toupper(target[0]);
+    while (fscanf(sfile, "%s %s %i %i %i\n", st.productname, st.productcomp, &st.price, &st.productid, &st.Qnt) != EOF){
+        if (strcmp(target, st.productname) == 0){
+            found = 1;
+        }else{
+            fprintf(tfile, "%s %s %i %i %i\n", st.productname, st.productcomp, st.price, st.productid, st.Qnt);
+        }
+    }if (!found){
+        printf("\n Record not Found");
+        getch();
+        main();
+    }else{
+        printf("\n Record deleted");
+    }fclose(sfile);
+    fclose(tfile);
+    remove("NextFile.dat");
+    rename("TempFile.dat", "NextFile.dat");
+    printf("\nPress any key to go to Main Menu!");
+    while ((st.c = getch()) == '\r');
+    main();
+}
+
+void read_item(){
+    FILE *f;
+    int i, q;
+    if ((f = fopen("NextFile.dat", "r")) == NULL){
+        gotoxy(10, 3);
+        printf("NO RECORDS");
+        printf("\n\t\tPress any key to go back to Menu.");
+        getch();
+        main();
+    }else{
+        gotoxy(0, 5);
+        for (i = 0; i < 100; i++){
+            printf("-");
+        }gotoxy(5, 6);
+        printf("Item Name");
+        gotoxy(25, 6);
+        printf("Item Price");
+        gotoxy(40, 6);
+        printf("Item Company");
+        gotoxy(60, 6);
+        printf("Item CODE");
+        gotoxy(80, 6);
+        printf("Item Quantity\n");
+        q = 8;
+        while (fscanf(f, "%s %s %i %i %i\n", st.productname, st.productcomp, &st.price, &st.productid, &st.Qnt) != EOF){
+            gotoxy(5, q);
+            printf("%s", st.productname);
+            gotoxy(25, q);
+            printf("%i", st.price);
+            gotoxy(40, q);
+            printf("%s", st.productcomp);
+            gotoxy(60, q);
+            printf("%i", st.productid);
+            gotoxy(80, q);
+            printf("%i", st.Qnt);
+            q++;
+        }printf("\n");
+        for (i = 0; i < 100; i++){
+            printf("-");
+        }
+    }fclose(f);
+    printf("\nPress any key to go to Main Menu!");
+    // while((st.c = getch()) =='\r');
+    getch();
+    main();
+}
+
+void edit_item(){
+    int index, valid;
+    char target[40];
+    FILE *fp, *rp;
+    int a = 0;
+    int id;
+    char edit;
+    long int size = sizeof(st);
+    if ((fp = fopen("NextFile.dat", "r+")) == NULL){
+        printf("NO RECORD ADDED.");
+        main();
+    }else{
+        rp = fopen("TempFile.dat", "a");
+        system("cls");
+        printf("Enter Item Code for edit:");
+        scanf("%i", &id);
+        fflush(stdin);
+        while (fscanf(fp, "%s %s %i %i %i\n", st.productname, st.productcomp, &st.price, &st.productid, &st.Qnt) != EOF){
+            if (id == st.productid){
+                a = 1;
+                printf("\n\t*****  Record Found  *****");
+                printf("\nItem Name\t\t: %s", st.productname);
+                printf("\nItem Company\t\t: %s", st.productcomp);
+                printf("\nPrice\t\t\t: %i", st.price);
+                printf("\nItem Code\t\t: %i", st.productid);
+                printf("\nItem Quantity\t:%i", st.Qnt);
+                printf("\n\n\t*** New Record ***");
+                do{
+                    fflush(stdin);
+                    printf("\nNew Item Name\t\t: ");
+                    gets(st.productname);
+                    st.productname[0] = toupper(st.productname[0]);
+                    for (index = 0; index < strlen(st.productname); ++index){
+                        if (isalpha(st.productname[index]))
+                            valid = 1;
+                        else{
+                            valid = 0;
+                            break;
+                        }
+                    }if (!valid){
+                        printf("\n Name contain invalid character. Please 'Enter' again");
+                        getch();
+                    }
+                }while (!valid);
+
+                do{
+                    char productcomp[40];
+                    fflush(stdin);
+                    printf("\nNew Item Company\t\t:");
+                    gets(st.productcomp);
+                    st.productcomp[0] = toupper(st.productcomp[0]);
+
+                    for (index = 0; index < strlen(st.productcomp); ++index){
+                        if (isalpha(st.productcomp[index]))
+                            valid = 1;
+                        else{
+                            valid = 0;
+                            break;
+                        }
+                    }if (!valid){
+                        printf("\n Name contain invalid character. Please 'Enter' again");
+                        getch();
+                    }
+                }while (!valid);
+
+                do{
+                    printf("\nNew Price [10-5000]$:");
+                    scanf("%i", &st.price);
+                    if (st.price < 10 || st.price > 5000){
+                        printf("\n\tYou Cannot Enter the price limit [10-5000].Re-Enter.");
+                    }
+                }while (st.price < 10 || st.price > 5000);
+
+                printf("\nEnter New Item Code\t\t:");
+                scanf("%i", &st.productid);
+
+                do{
+                    printf("\nNew Quantity [1-500]\t:");
+                    scanf("%i", &st.Qnt);
+                    if (st.Qnt < 1 || st.Qnt > 500){
+                        printf("\n\tEnter New Quantity[1-500] only.Re-Enter.");
+                    }
+                }while (st.Qnt < 1 || st.Qnt > 500);
+
+                printf("Press 'y' to edit the existing record or any key to cancel...");
+                edit = getche();
+                if (edit == 'y' || edit == 'Y'){
+                    fprintf(rp, "%s %s %i %i %i\n", st.productname, st.productcomp, st.price, st.productid, st.Qnt);
+                    fflush(stdin);
+                    printf("\n\n\t\tYOUR RECORD IS SUCCESSFULLY EDITED!!!");
+                }
+            }else{
+                fprintf(rp, "%s %s %i %i %i\n", st.productname, st.productcomp, st.price, st.productid, st.Qnt);
+                fflush(stdin);
+            }
+        }if (!a){
+            printf("\n\nTHIS ITEM DOESN'T EXIST!!!!");
+        }fclose(rp);
+        fclose(fp);
+        remove("NextFile.dat");
+        rename("TempFile.dat", "NextFile.dat");
+        getch();
+    }main();
+}
+
+<====================== KODE PROGRAM 2 (SIMPLIFIED) ======================>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <conio.h>    // For getch() - Windows specific
+#include <windows.h>  // For gotoxy() cursor positioning (optional)
+
+// Define maximum items that can be stored
+#define MAX_ITEMS 100
+
+// Define a struct to hold an item record
+typedef struct {
+    int id;
+    char name[50];
+    char description[100];
+} Item;
+
+// Global array of items and count
+Item items[MAX_ITEMS];
+int itemCount = 0;
+
+// Function to move cursor to a specific position on console (Windows only)
+void gotoxy(int x, int y) {
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+// Function prototypes
+void menu();
+void addItem();
+void displayItems();
+void searchItem();
+void updateItem();
+void deleteItem();
+void clearInputBuffer();
+
+int main() {
+    menu();
+    return 0;
+}
+
+// Menu function to display options and handle user choice
+void menu() {
+    int choice;
+
+    do {
+        system("cls");  // Clear screen
+
+        printf("===== CRUD Program Menu =====\n");
+        printf("1. Add Item\n");
+        printf("2. Display All Items\n");
+        printf("3. Search Item\n");
+        printf("4. Update Item\n");
+        printf("5. Delete Item\n");
+        printf("6. Exit\n");
+        printf("=============================\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        clearInputBuffer();
+
+        switch(choice) {
+            case 1:
+                addItem();
+                break;
+            case 2:
+                displayItems();
+                break;
+            case 3:
+                searchItem();
+                break;
+            case 4:
+                updateItem();
+                break;
+            case 5:
+                deleteItem();
+                break;
+            case 6:
+                printf("Exiting program...\n");
+                break;
+            default:
+                printf("Invalid choice! Please try again.\n");
+                system("pause");
+        }
+    } while(choice != 6);
+}
+
+// Adds a new item to the array
+void addItem() {
+    if (itemCount >= MAX_ITEMS) {
+        printf("Item list is full. Cannot add more items.\n");
+        system("pause");
+        return;
+    }
+
+    printf("\nEnter ID: ");
+    scanf("%d", &items[itemCount].id);
+    clearInputBuffer();
+
+    printf("Enter Name: ");
+    fgets(items[itemCount].name, sizeof(items[itemCount].name), stdin);
+    items[itemCount].name[strcspn(items[itemCount].name, "\n")] = 0;  // Remove newline
+
+    printf("Enter Description: ");
+    fgets(items[itemCount].description, sizeof(items[itemCount].description), stdin);
+    items[itemCount].description[strcspn(items[itemCount].description, "\n")] = 0;
+
+    itemCount++;
+    printf("Item added successfully!\n");
+    system("pause");
+}
+
+// Displays all stored items in a formatted way
+void displayItems() {
+    if (itemCount == 0) {
+        printf("\nNo items to display.\n");
+    } else {
+        printf("\n\tID\tName\t\tDescription\n");
+        printf("\t-------------------------------------------------\n");
+        for (int i = 0; i < itemCount; i++) {
+            printf("\t%d\t%s\t\t%s\n", items[i].id, items[i].name, items[i].description);
+        }
+    }
+    system("pause");
+}
+
+// Searches for an item by ID and displays it
+void searchItem() {
+    int searchId, found = 0;
+    printf("\nEnter ID to search: ");
+    scanf("%d", &searchId);
+    clearInputBuffer();
+
+    for (int i = 0; i < itemCount; i++) {
+        if (items[i].id == searchId) {
+            printf("Item found:\n");
+            printf("ID: %d\nName: %s\nDescription: %s\n", items[i].id, items[i].name, items[i].description);
+            found = 1;
+            break;
+        }
+    }
+    if (!found) {
+        printf("Item with ID %d not found.\n", searchId);
+    }
+    system("pause");
+}
+
+// Updates an item based on ID
+void updateItem() {
+    int updateId, found = 0;
+    printf("\nEnter ID to update: ");
+    scanf("%d", &updateId);
+    clearInputBuffer();
+
+    for (int i = 0; i < itemCount; i++) {
+        if (items[i].id == updateId) {
+            printf("Enter new name: ");
+            fgets(items[i].name, sizeof(items[i].name), stdin);
+            items[i].name[strcspn(items[i].name, "\n")] = 0;
+
+            printf("Enter new description: ");
+            fgets(items[i].description, sizeof(items[i].description), stdin);
+            items[i].description[strcspn(items[i].description, "\n")] = 0;
+
+            printf("Item updated successfully.\n");
+            found = 1;
+            break;
+        }
+    }
+    if (!found) {
+        printf("Item with ID %d not found.\n", updateId);
+    }
+    system("pause");
+}
+
+// Deletes an item based on ID by shifting array elements down
+void deleteItem() {
+    int deleteId, found = 0;
+    printf("\nEnter ID to delete: ");
+    scanf("%d", &deleteId);
+    clearInputBuffer();
+
+    for (int i = 0; i < itemCount; i++) {
+        if (items[i].id == deleteId) {
+            // Shift all later items one step back
+            for (int j = i; j < itemCount -1; j++) {
+                items[j] = items[j + 1];
+            }
+            itemCount--;
+            printf("Item deleted successfully.\n");
+            found = 1;
+            break;
+        }
+    }
+    if (!found) {
+        printf("Item with ID %d not found.\n", deleteId);
+    }
+    system("pause");
+}
+
+// Clears stdin buffer to avoid issues after scanf
+void clearInputBuffer() {
+    while (getchar() != '\n');
+}
