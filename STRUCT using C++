@@ -1,0 +1,136 @@
+<======================== KODE PROGRAM 1 ARYO ========================>
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Mendefinisikan struct Jurusan yang berisi prodi dan peminatan sebagai string
+struct Jurusan {
+    string prodi;
+    string peminatan;
+};
+
+// Mendefinisikan typedef struct Mahasiswa dengan anggota nama, nim, dan jurusan
+struct Mahasiswa {
+    string nama;
+    long nim;
+    Jurusan jurusan;
+};
+
+// Fungsi untuk menampilkan data mahasiswa yang diterima sebagai array
+void tampilkan(const Mahasiswa mhs[], int size) {
+    for(int i = 0; i < size; i++) {
+        cout << "\nData Mahasiswa Ke-" << i + 1 << endl;
+        cout << "Nama : " << mhs[i].nama << endl;
+        cout << "NIM  : " << mhs[i].nim << endl;
+        cout << "Prodi: " << mhs[i].jurusan.prodi << endl;
+        cout << "Peminatan: " << mhs[i].jurusan.peminatan << endl;
+    }
+}
+
+int main() {
+    const int MAX = 3;  // Konstanta jumlah mahasiswa
+    Mahasiswa mhs[MAX];
+
+    //    mhs.nama = "Aryo";
+    //    strcpy(mhs.nama, "Aryo");
+    //    mhs.nim = 672021121;
+
+    for (int i = 0; i < MAX; i++) {
+        cout << "Data Mahasiswa Ke-" << i+1 << endl;
+
+        cout << "Masukkan Nama: ";
+        getline(cin, mhs[i].nama);  // Menggunakan getline agar bisa input dengan spasi
+
+        cout << "Masukkan NIM: ";
+        cin >> mhs[i].nim;
+        cin.ignore();  // Menghilangkan newline yang tertinggal setelah input NIM
+
+        cout << "Masukkan Prodi: ";
+        getline(cin, mhs[i].jurusan.prodi);
+
+        cout << "Masukkan Peminatan: ";
+        getline(cin, mhs[i].jurusan.peminatan);
+    }
+
+    tampilkan(mhs, MAX);
+
+    return 0;
+}
+
+<======================== KODE PROGRAM 2 ARYO ========================>
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Mendefinisikan struct zodiak dengan nama dan rentang tanggal/bulan
+struct Zodiak {
+    string nama;
+    int tgl_awal;
+    int bln_awal;
+    int tgl_akhir;
+    int bln_akhir;
+};
+
+int main() {
+    Zodiak bintang = {"Scorpio", 23, 10, 21, 11};  // Inisialisasi struct Zodiak Scorpio
+
+    int tgl_lahir, bln_lahir, thn_lahir;
+
+    cout << "Masukkan tanggal lahir Anda (d m y): ";
+    cin >> tgl_lahir >> bln_lahir >> thn_lahir;
+
+    // Memeriksa apakah tanggal lahir masuk dalam rentang zodiak Scorpio
+    if ((tgl_lahir >= bintang.tgl_awal && bln_lahir == bintang.bln_awal) || 
+        (tgl_lahir <= bintang.tgl_akhir && bln_lahir == bintang.bln_akhir)) {
+        cout << "Bintang Anda adalah " << bintang.nama << endl;
+    } else {
+        cout << "Bintang Anda bukan " << bintang.nama << endl;
+    }
+
+    return 0;
+}
+
+<======================== KODE PROGRAM 3 MATTHEW ========================>
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Mendefinisikan struct Address yang berisi kota dan nomor rumah
+struct Address {
+    string kota;
+    int noRumah;
+};
+
+// Mendefinisikan struct Mahasiswa yang memiliki nama, nim, dan alamat bertipe Address
+struct Mahasiswa {
+    string nama;
+    int nim;
+    Address addr;
+};
+
+int main() {
+    // Contoh penggunaan typedef (alias) untuk tipe data integer
+    typedef int bilBulat;
+    bilBulat c = 99;
+    cout << c << endl;
+
+    // Deklarasi array struct Mahasiswa
+    Mahasiswa m3[2];
+    m3[0].nama = "anton";               // Mengisi nama mahasiswa ke-0
+    m3[0].nim = 12345;                  // Mengisi nim mahasiswa ke-0
+    cout << "\n" << m3[0].nama;
+    cout << "\nNIM: " << m3[0].nim << endl;
+
+    Mahasiswa m1;
+    m1.nama = "memet";                  // Mengisi nama mahasiswa
+    m1.nim = 672021021;                 // Mengisi nim mahasiswa
+    m1.addr.kota = "Solo";              // Mengisi kota di alamat
+    m1.addr.noRumah = 456;              // Mengisi nomor rumah di alamat
+
+    cout << "\nNama: " << m1.nama << endl;
+    cout << "NIM: " << m1.nim << endl;
+    cout << "Asal Kota: " << m1.addr.kota << endl;
+    cout << "Nomor Rumah: " << m1.addr.noRumah << endl;
+
+    return 0;
+}
