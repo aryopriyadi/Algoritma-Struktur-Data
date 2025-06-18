@@ -1,0 +1,131 @@
+#include <iostream>
+using namespace std;
+
+#define MAX 5  // Kapasitas maksimum antrian
+
+// Kelas Queue merepresentasikan struktur data antrian
+class Queue {
+private:
+    int head;           // Indeks elemen pertama (depan) antrian
+    int tail;           // Indeks elemen terakhir (belakang) antrian
+    int data[MAX];      // Array untuk menyimpan data antrian dengan kapasitas MAX
+
+public:
+    // Konstruktor untuk inisialisasi antrian
+    Queue() {
+        head = tail = -1; // Tandai antrian kosong dengan head dan tail = -1
+    }
+
+    // Fungsi untuk mengecek apakah antrian kosong
+    bool isEmpty() const {
+        return (tail == -1); // TRUE jika tail = -1 (antrian kosong)
+    }
+
+    // Fungsi untuk mengecek apakah antrian penuh
+    bool isFull() const {
+        return (tail == MAX - 1); // TRUE jika tail sudah di posisi terakhir array
+    }
+
+    // Fungsi untuk memasukkan data ke belakang antrian (enqueue)
+    void enqueue(int value) {
+        if (isEmpty()) { 
+            // Jika antrian kosong, atur head dan tail ke 0 dan masukkan data
+            head = tail = 0;
+            data[tail] = value;
+            cout << "Data " << value << " berhasil diinput!" << endl;
+        } else if (!isFull()) {
+            // Jika antrian belum penuh, naikkan tail dan masukkan data baru
+            tail++;
+            data[tail] = value;
+            cout << "Data " << value << " berhasil diinput!" << endl;
+        } else {
+            // Jika antrian penuh, tampilkan pesan error
+            cout << "Data sudah penuh!" << endl;
+        }
+    }
+
+    // Fungsi untuk mengeluarkan data dari depan antrian (dequeue)
+    int dequeue() {
+        if (isEmpty()) {
+            cout << "Data masih kosong!" << endl;
+            return -1; // Return nilai error karena antrian kosong
+        } else {
+            int removedData = data[head]; // Simpan data yang akan dikeluarkan
+            cout << "Data " << removedData << " telah dikeluarkan dari antrian" << endl;
+            // Geser semua data ke depan agar head tetap di posisi 0
+            for (int i = head; i < tail; i++) {
+                data[i] = data[i + 1];
+            }
+            tail--; // Kurangi tail karena ada satu data yang dikeluarkan
+            // Jika antrian menjadi kosong setelah dequeue, reset head dan tail
+            if (tail < head) {
+                head = tail = -1;
+            }
+            return removedData; // Kembalikan data yang dikeluarkan
+        }
+    }
+
+    // Fungsi untuk mengosongkan antrian
+    void clear() {
+        head = tail = -1; // Reset head dan tail sebagai tanda antrian kosong
+        cout << "Data telah di-reset!" << endl;
+    }
+
+    // Fungsi untuk mencetak seluruh isi antrian dari head ke tail
+    void print() const {
+        if (!isEmpty()) {
+            cout << "Isi Antrian: ";
+            for (int i = head; i <= tail; i++) {
+                cout << data[i] << " ";
+            }
+            cout << endl;
+        } else {
+            cout << "Data masih kosong!" << endl;
+        }
+    }
+};
+
+int main() {
+    Queue antrian;   // Objek antrian dari kelas Queue
+    int choice, dt;
+
+    do {
+        // Menu operasi queue
+        cout << "\nMenu Antrian:\n";
+        cout << "1. Enqueue (Masukkan data ke antrian)\n";
+        cout << "2. Dequeue (Keluarkan data dari antrian)\n";
+        cout << "3. Print Antrian\n";
+        cout << "4. Clear Antrian\n";
+        cout << "5. Exit\n";
+        cout << "Input pilihan: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                if (!antrian.isFull()) {
+                    cout << "Masukkan data: ";
+                    cin >> dt;
+                    antrian.enqueue(dt);  // Masukkan data ke antrian
+                } else {
+                    cout << "Data sudah penuh!" << endl;
+                }
+                break;
+            case 2:
+                antrian.dequeue(); // Keluarkan data dari antrian
+                break;
+            case 3:
+                antrian.print();   // Tampilkan isi antrian
+                break;
+            case 4:
+                antrian.clear();   // Kosongkan antrian
+                break;
+            case 5:
+                cout << "Keluar program.\n";
+                break;
+            default:
+                cout << "Pilihan tidak valid, silakan coba lagi.\n";
+        }
+    } while (choice != 5);
+
+    return 0;
+}
