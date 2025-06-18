@@ -1,0 +1,94 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>      // Untuk fungsi getch() dan clrscr() (jika digunakan)
+#include <windows.h>    // Untuk fungsi gotoxy()
+#include <string.h>     // Untuk fungsi-fungsi string seperti strlen, strcpy, strcat, strcmp, strstr
+#define MAX 255        // Mendefinisikan makro untuk batas maksimal ukuran array char
+
+// Fungsi gotoxy untuk mengatur posisi cursor pada console
+void gotoxy(int x, int y){
+    COORD coord;           // Membuat variabel koordinat console
+    coord.X = x;           // Set posisi X
+    coord.Y = y;           // Set posisi Y
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord); // Pindahkan cursor ke posisi (x,y)
+}
+
+int main(){
+    /*
+    Contoh char array atau string hardcode (manual isi)
+    char var1[] = "Kak Fiona cantik sekali :D";  // Deklarasi array char dengan string literal
+    printf("%s\n", var1);                        // Menampilkan string var1
+    printf("Panjang string adalah %lu\n", strlen(var1));  // Menghitung dan menampilkan panjang string
+    */
+
+    /*
+    Contoh input menggunakan char array (string) dan menghitung panjang string input
+    char var2[MAX];                              // Deklarasi array char dengan ukuran MAX
+    printf("Masukkan kata: ");
+    scanf(" %[^\n]s", var2);                    // Membaca input string dengan spasi sampai enter
+    int panjang = strlen(var2);                  // Menghitung panjang string yang diinput
+    printf("Panjang string = %d\n", panjang);   // Menampilkan panjang string
+    */
+
+    /*
+    Contoh strcpy untuk menyalin string ke variabel lain
+    char simpan[MAX];
+    strcpy(simpan, "pacarnya Krista");       // Menyalin string literal ke variabel simpan
+    printf("Halo, saya adalah %s\n", simpan);  // Tampilkan isi simpan
+    */
+
+    /*
+    Contoh input string dan menyalin ke string lain menggunakan strcpy
+    char nama[MAX];
+    char save[MAX] = "Mahasiswa FTI UKSW";
+
+    printf("Masukkan nama: ");
+    scanf(" %[^\n]s", nama);                     // Input string nama
+    strcpy(save, nama);                          // Menyalin string nama ke save
+    printf("Isi save = %s\n", save);            // Tampilkan isi save
+    printf("Isi nama = %s\n", nama);            // Tampilkan isi nama
+    */
+
+    /*
+    Contoh strcat (menggabungkan dua string)
+    char input1[MAX], input2[MAX];
+    printf("Masukkan inputan 1: ");
+    scanf(" %[^\n]s", input1);
+    printf("Masukkan inputan 2: ");
+    scanf(" %[^\n]s", input2);
+    strcat(input1, input2);                      // Menggabungkan input2 ke input1
+    printf("Hasil gabungan: %s\n", input1);
+    printf("Panjang string gabungan: %lu\n", strlen(input1)); // Menghitung panjang string gabungan
+    */
+
+    /*
+    Contoh strcmp (membandingkan dua string)
+    char kata[MAX];
+    printf("Masukkan kata: ");
+    scanf(" %[^\n]s", kata);
+
+    if(strcmp(kata, "asdosganteng") == 0) {         // Jika string sama dengan "asdosasd"
+        printf("Kata asdosganteng ditemukan\n");
+    } else {
+        printf("Kata yang dituju tidak ditemukan\n");
+    }
+    */
+
+    /*
+    Contoh strstr (mencari substring di dalam string)
+    char teks[MAX];
+    char *target;
+    char cari[] = "graceful";
+
+    printf("Silahkan inputkan kalimat: ");
+    scanf(" %[^\n]s", teks);
+
+    if((target = strstr(teks, cari)) != NULL) { // Jika substring ditemukan
+        printf("Ada tulisan %s\n", cari);
+    } else {
+        printf("Tidak ada tulisan %s\n", cari);
+    }
+    */
+
+    return 0;
+}
