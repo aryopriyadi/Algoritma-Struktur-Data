@@ -1,0 +1,119 @@
+#include <iostream>    // Untuk input dan output
+#include <string>      // Untuk penggunaan tipe data string
+using namespace std;
+
+const int MAX = 5; // Maksimal kapasitas stack
+
+// ======= Definisi kelas Stack (Tumpukan) =======
+class Stack {
+private:
+    string data[MAX]; // Array untuk menyimpan data string, kapasitas MAX
+    int top;          // Variabel top sebagai penunjuk elemen teratas di stack
+
+public:
+    // Konstruktor, otomatis dipanggil saat objek dibuat
+    Stack() {
+        top = -1;   // top = -1 menandakan stack masih kosong
+    }
+
+    // Fungsi untuk mengecek apakah stack kosong
+    bool isEmpty() {
+        return (top == -1);  // Stack kosong jika top == -1
+    }
+
+    // Fungsi untuk mengecek apakah stack penuh
+    bool isFull() {
+        return (top == MAX - 1);  // Stack penuh jika top == MAX-1
+    }
+
+    // Fungsi memasukkan data ke dalam stack (push)
+    void push(const string& item) {
+        if (!isFull()) {    // Jika stack belum penuh
+            top++;          // Naikkan posisi top ke elemen baru
+            data[top] = item; // Simpan data di posisi top
+            cout << "Data \"" << item << "\" berhasil diinput ke stack.\n";
+        }
+        else {
+            cout << "Stack sudah penuh, tidak dapat menambahkan data.\n";
+        }
+    }
+
+    // Fungsi mengeluarkan data dari stack (pop)
+    void pop() {
+        if (!isEmpty()) {   // Jika stack tidak kosong
+            cout << "Data \"" << data[top] << "\" telah dibuang dari stack.\n";
+            top--;          // Turunkan posisi top, data paling atas dihapus
+        }
+        else {
+            cout << "Stack kosong, tidak ada data yang bisa di-pop.\n";
+        }
+    }
+
+    // Fungsi menampilkan seluruh isi stack
+    void printData() {
+        if (!isEmpty()) {   // Jika stack tidak kosong
+            cout << "Isi Stack dari atas:\n";
+            for (int i = top; i >= 0; i--) {
+                cout << data[i] << endl;  // Tampilkan data dari top ke bawah
+            }
+        }
+        else {
+            cout << "Stack kosong.\n";
+        }
+    }
+
+    // Fungsi mengosongkan stack (reset)
+    void clearStack() {
+        if (!isEmpty()) {
+            top = -1;   // Reset stack dengan mengeset top kembali ke -1
+            cout << "Stack telah di-reset (dikosongkan).\n";
+        }
+        else {
+            cout << "Stack sudah kosong, tidak perlu di-reset.\n";
+        }
+    }
+};
+
+int main() {
+    Stack stack; // Membuat objek stack dari kelas Stack
+
+    int choice;
+    string inputData;
+
+    do {
+        // Menu pilihan operasi stack
+        cout << "\nMenu Stack:\n";
+        cout << "1. Push Stack\n";
+        cout << "2. Pop Stack\n";
+        cout << "3. Print Stack\n";
+        cout << "4. Clear Stack\n";
+        cout << "5. Exit\n";
+        cout << "Input pilihan: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            cout << "Masukkan data (string, tanpa spasi): ";
+            cin >> inputData;
+            stack.push(inputData);  // Memasukkan data ke stack
+            break;
+        case 2:
+            stack.pop();            // Mengeluarkan data dari stack
+            break;
+        case 3:
+            stack.printData();      // Menampilkan isi stack
+            break;
+        case 4:
+            stack.clearStack();     // Mengosongkan stack
+            break;
+        case 5:
+            cout << "Keluar program\n";
+            break;
+        default:
+            cout << "Pilihan tidak valid. Silakan coba lagi.\n";
+            break;
+        }
+    } while (choice != 5);
+
+    return 0;
+}
