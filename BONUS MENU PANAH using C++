@@ -1,0 +1,217 @@
+<============================ Kode Program 1 (tanpa memanggil Goto) ============================>
+#include <iostream>
+#include <windows.h>
+#include <conio.h>
+#include <unistd.h> // Untuk sleep di Linux, jika di Windows bisa diganti Sleep
+
+using namespace std;
+
+// Fungsi gotoxy untuk mengatur posisi kursor di console (x, y)
+void gotoxy(int x, int y) {
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+// Fungsi load menampilkan animasi loading sederhana
+void load() {
+    system("cls");          // Bersihkan layar
+    system("COLOR F8");     // Ubah warna console
+    cout << "LOADING ";
+    sleep(1);               // Pause 1 detik
+
+    for (int x = 0; x < 5; x++) {
+        cout << "*";        // Cetak bintang satu per satu
+        sleep(1);           // Pause 1 detik setiap bintang
+    }
+    cout << "\33[2K\r";     // Clear line dan kembalikan cursor ke awal baris
+    system("cls");          // Bersihkan layar setelah loading selesai
+}
+
+// Fungsi untuk menampilkan panah "==>" pada posisi menu yang aktif
+void panah(int posisi_pilihan, int posisi_arrow) {
+    if (posisi_pilihan == posisi_arrow) {
+        cout << "==>";
+    } else {
+        cout << "   ";
+    }
+}
+
+int main() {
+    system("cls");
+    system("COLOR F8");
+    gotoxy(2, 2);
+    cout << "===========================";
+    gotoxy(2, 3);
+    cout << "Tugas Quiz Stack and Queue";
+    gotoxy(2, 4);
+    cout << "===========================";
+
+    int posisi = 1;   // Posisi menu awal
+    int tekan = 0;    // Variable untuk input keyboard
+
+    // Loop sampai tombol Enter (ASCII 13) ditekan
+    while (tekan != 13) {
+        gotoxy(2, 5);
+        panah(1, posisi); cout << " 1. Menu 1\n";
+        gotoxy(2, 6);
+        panah(2, posisi); cout << " 2. Menu 2\n";
+        gotoxy(2, 7);
+        panah(3, posisi); cout << " 3. Menu 3\n";
+        gotoxy(2, 8);
+        panah(4, posisi); cout << " 4. Menu 4\n";
+        gotoxy(2, 9);
+        panah(5, posisi); cout << " 5. Menu 5\n";
+
+        tekan = getch();  // Ambil karakter tanpa enter
+
+        if (tekan == 80 && posisi < 5) {  // Panah bawah
+            posisi++;
+        } else if (tekan == 72 && posisi > 1) {  // Panah atas
+            posisi--;
+        }
+    }
+
+    // Setelah memilih menu dengan enter, tampilkan pesan sesuai pilihan
+    system("cls");
+    system("COLOR F8");
+    switch (posisi) {
+        case 1:
+            cout << "Halo Adikkss :v \n";
+            break;
+        case 2:
+            cout << "Hai Dunia Gembiralah :D \n";
+            break;
+        case 3:
+            cout << "Selamat Hari Jumat, GBU :3 \n";
+            break;
+        case 4:
+            cout << "Jangan lupa makan, kesehatanmu loo :p \n";
+            break;
+        case 5:
+            cout << "Udah weh pulang sana :'v \n";
+            break;
+    }
+
+    system("pause");
+    return 0;
+}
+
+<============================ Kode Program 2 (memanggil Goto dari Main) ============================>
+#include <iostream>
+#include <windows.h>
+#include <conio.h>
+#include <unistd.h> // Untuk sleep jika diperlukan
+
+using namespace std;
+
+// Fungsi gotoxy untuk mengatur posisi kursor di console (x, y)
+void gotoxy(int x, int y) {
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+// Fungsi load animasi sederhana (jika ingin dipakai)
+void load() {
+    system("cls");
+    system("COLOR F8");
+    cout << "LOADING ";
+    sleep(1);
+    for (int x = 0; x < 5; x++) {
+        cout << "*";
+        sleep(1);
+    }
+    cout << "\33[2K\r";
+    system("cls");
+}
+
+// Fungsi untuk menampilkan panah "==>" pada posisi menu yang aktif
+void panah(int posisi_pilihan, int posisi_arrow) {
+    if (posisi_pilihan == posisi_arrow) {
+        cout << "==>";
+    } else {
+        cout << "   ";
+    }
+}
+
+// Deklarasi fungsi menu 1 sampai menu 5
+void menu1() {
+    system("cls");
+    system("COLOR F8");
+    cout << "Halo Adikkss :v \n";
+    system("pause");
+}
+
+void menu2() {
+    system("cls");
+    system("COLOR F8");
+    cout << "Hai Dunia Gembiralah :D \n";
+    system("pause");
+}
+
+void menu3() {
+    system("cls");
+    system("COLOR F8");
+    cout << "Selamat Hari Jumat, GBU :3 \n";
+    system("pause");
+}
+
+void menu4() {
+    system("cls");
+    system("COLOR F8");
+    cout << "Jangan lupa makan, kesehatanmu loo :p \n";
+    system("pause");
+}
+
+void menu5() {
+    system("cls");
+    system("COLOR F8");
+    cout << "Udah weh pulang sana :'v \n";
+    system("pause");
+}
+
+int main() {
+    int posisi = 1;
+    int tekan = 0;
+
+    // Array pointer fungsi untuk menu memudahkan pemanggilan fungsi sesuai pilihan
+    void (*menuPointer[5])() = {menu1, menu2, menu3, menu4, menu5};
+
+MENU_START:   // Label goto untuk kembali ke menu utama
+    system("cls");
+    system("COLOR F8");
+
+    gotoxy(2, 2);
+    cout << "===========================";
+    gotoxy(2, 3);
+    cout << "Tugas Quiz Stack and Queue";
+    gotoxy(2, 4);
+    cout << "===========================";
+
+    // Loop menampilkan menu dan navigasi panah
+    while(tekan != 13) {  // Enter = 13
+        for(int i = 1; i <= 5; i++) {
+            gotoxy(2, 4 + i);
+            panah(i, posisi);
+            cout << " " << i << ". Menu " << i << "\n";
+        }
+
+        tekan = getch();   // Ambil input karakter tanpa menunggu enter
+        if (tekan == 80 && posisi < 5) {     // Panah bawah
+            posisi++;
+        } else if (tekan == 72 && posisi > 1) { // Panah atas
+            posisi--;
+        }
+    }
+
+    // Panggil fungsi menu yang dipilih menggunakan pointer fungsi
+    (*menuPointer[posisi - 1])();
+
+    // Kembali ke menu utama dengan goto
+    goto MENU_START;
+
+    return 0;
+}
