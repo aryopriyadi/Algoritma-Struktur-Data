@@ -1,0 +1,147 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 5 // Maksimal kapasitas stack
+
+// ======= Definisi struktur Stack (Tumpukan) =======
+struct Tumpukan {
+    char data[MAX][50]; // Array 2D untuk menyimpan data string, kapasitas MAX
+    int top;            // ***Variabel top sebagai penunjuk elemen teratas di stack***
+} tumpuk;
+
+// ======= Fungsi untuk mengecek apakah stack kosong =======
+int isEmpty()
+{
+    // Stack kosong jika top == -1
+    if(tumpuk.top == -1)
+    {
+        return 1; // true, stack kosong
+    } else {
+        return 0; // false, stack tidak kosong
+    }
+}
+
+// ======= Fungsi untuk mengecek apakah stack penuh =======
+int isFull()
+{
+    // Stack penuh jika top berada di posisi MAX-1
+    if(tumpuk.top == MAX-1)
+    {
+        return 1; // true, stack penuh
+    }
+    else {
+        return 0; // false, stack belum penuh
+    }
+}
+
+// ======= Fungsi inisialisasi stack, men-set top ke -1 =======
+void inisialisasi()
+{
+    tumpuk.top = -1; // ***top = -1 menandakan stack masih kosong***
+}
+
+// ======= Fungsi memasukkan data ke dalam stack (push) =======
+void push()
+{
+    char temp[50]; // Buffer sementara untuk input data
+    if(isFull() != 1) // Cek apakah stack belum penuh
+    {
+        tumpuk.top++; // ***Naikkan posisi top ke elemen baru***
+
+        printf("Masukkan data: ");
+        scanf("%s", temp); // Input data string (tanpa spasi)
+
+        strcpy(tumpuk.data[tumpuk.top], temp); // Salin data ke stack
+
+        printf("Data %s berhasil diinput\n", tumpuk.data[tumpuk.top]);
+    } else {
+        printf("Data sudah penuh\n"); // Stack penuh, push gagal
+    }
+}
+
+// ======= Fungsi mengeluarkan data dari stack (pop) =======
+void pop()
+{
+    if(isEmpty() != 1) // Cek apakah stack tidak kosong
+    {
+        printf("Data %s telah dibuang\n", tumpuk.data[tumpuk.top]);
+        tumpuk.top--; // ***Turunkan posisi top, artinya elemen terakhir dihapus dari stack***
+    }
+    else {
+        printf("Data masih kosong\n"); // Stack kosong, pop gagal
+    }
+}
+
+// ======= Fungsi menampilkan seluruh isi stack =======
+void printData()
+{
+    if(isEmpty() != 1) // Cek apakah stack tidak kosong
+    {
+        printf("Isi Stack:\n");
+        for(int i = tumpuk.top; i >= 0; i--)
+        {
+            printf("%s\n", tumpuk.data[i]); // Tampilkan data dari top ke bawah
+        }
+    }
+    else {
+        printf("Data masih kosong\n");
+    }
+}
+
+// ======= Fungsi untuk mengosongkan stack (reset) =======
+void clearStack()
+{
+    if(isEmpty())
+    {
+        printf("Data masih kosong!, tidak bisa reset\n");
+    }
+    else {
+        inisialisasi(); // Reset stack dengan menginisialisasi ulang top
+        printf("Data telah di reset!\n");
+    }
+}
+
+int main()
+{
+    inisialisasi(); // Inisialisasi stack sebelum digunakan
+
+    int choice; // Variabel pilihan menu
+
+    do {
+        // Menu pilihan operasi stack
+        printf("\nMenu Stack:\n");
+        printf("1. Push Stack\n");
+        printf("2. Pop Stack\n");
+        printf("3. Print Stack\n");
+        printf("4. Clear Stack\n");
+        printf("5. Exit\n");
+        printf("Input pilihan: ");
+        scanf("%d", &choice);
+
+        // Proses menu menggunakan switch-case
+        switch(choice)
+        {
+            case 1:
+                push(); // Masukkan data ke stack
+                break;
+            case 2:
+                pop(); // Keluarkan data dari stack
+                break;
+            case 3:
+                printData(); // Tampilkan isi stack
+                break;
+            case 4:
+                clearStack(); // Kosongkan stack
+                break;
+            case 5:
+                printf("Keluar program\n");
+                break;
+            default:
+                printf("Pilihan tidak ada dalam menu\n");
+                break;
+        }
+
+    } while(choice != 5); // Loop menu sampai user memilih keluar
+
+    return 0;
+}
