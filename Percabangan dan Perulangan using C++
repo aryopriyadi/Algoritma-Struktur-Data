@@ -1,0 +1,128 @@
+<========================== Kode Program 1 ==========================>
+#include <iostream>
+#include <windows.h>
+using namespace std;
+
+// Function to set cursor position on console, similar to gotoxy in C
+void gotoxy(int x, int y) {
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+// Program 1: Menu with do-while, switch-case, and for loops
+int main() {
+    int i, j, n, m;
+    do {
+        cout << "1. menu 1\n";
+        cout << "2. menu 2\n";
+        cout << "input pilihan : ";
+        cin >> n;
+
+        switch (n) {
+            case 1:
+                system("cls"); // Clear screen
+                cout << "Masukan input : ";
+                cin >> m;
+
+                // Nested loops to print pattern of stars
+                for (i = 0; i <= m; i++) {
+                    for (j = 1; j <= i; j++) {
+                        cout << "*";
+                    }
+                    cout << "\n";
+                }
+                break;
+
+            case 2:
+                system("cls"); // Clear screen
+                cout << "ini menu 2\n";
+                break;
+
+            default:
+                continue; // Repeat loop if invalid input
+        }
+    } while (n != 3);
+
+    return 0;
+}
+
+<========================== Kode Program 2 ==========================>
+#include <iostream>
+#include <conio.h> // For getch()
+using namespace std;
+
+// Program 2: Input validation with nested do-while, and star patterns with for loops
+int main() {
+    int a, b, c, d, e;
+    do {
+        do {
+            cout << "Masukkan Angka Sebuah Angka Lebih Dari 0 Kurang Dari Sama dengan 10 : ";
+            cin >> d;
+
+            // Input validation: repeat if out of range
+            while (d > 10 || d < 0) {
+                cout << "Input Anda Melebihi 10 Atau Kurang Dari 0 Silahkan Ulangi\n";
+                break;
+            }
+            while (d == 0) {
+                cout << "Input Anda Sama Dengan 0 Silahkan Ulangi\n";
+                break;
+            }
+        } while (d > 10 || d <= 0);
+
+        // Print upper pattern of stars and spaces
+        for (a = d * 2; a > 0; a--) {
+            for (b = 1; b <= a; b++) {
+                cout << "*";
+            }
+            for (c = a; c <= d * 2; c++) {
+                cout << " ";
+            }
+            for (c = a; c <= (d * 2) - 1; c++) {
+                cout << " ";
+            }
+            for (b = 1; b <= a; b++) {
+                cout << "*";
+            }
+            cout << "\n";
+        }
+
+        // Print lower pattern of stars and spaces
+        for (a = 2; a <= d * 2; a++) {
+            for (b = 1; b <= a; b++) {
+                cout << "*";
+            }
+            for (c = d * 2; c >= a; c--) {
+                cout << " ";
+            }
+            for (c = (d * 2) - 1; c >= a; c--) {
+                cout << " ";
+            }
+            for (b = 1; b <= a; b++) {
+                cout << "*";
+            }
+            cout << "\n";
+        }
+
+        cout << "Tekan Tombol Apapun Untuk Melanjutkan\n";
+        getch(); // Wait for key press
+
+        do {
+            cout << "Apakah Anda Ingin Mengulangi ? 1/0: ";
+            cin >> e;
+
+            while (e == 0) {
+                break;
+            }
+            while (e != 0 && e != 1) {
+                cout << "Pilihan Anda Salah Silahkan Ulangi!\n";
+                break;
+            }
+        } while (e != 0 && e != 1);
+
+    } while (e == 1);
+
+    return 0;
+}
