@@ -1,0 +1,111 @@
+<========================== BINARY SEARCHING ==========================>
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Fungsi binarySearch untuk melakukan pencarian elemen pada vector yang sudah terurut,
+// menggunakan metode pembagian ruang pencarian menjadi tengah, kiri, dan kanan
+int binarySearch(const vector<int>& array, int start_index, int end_index, int element) {
+    while (start_index <= end_index) {
+        // Hitung indeks tengah untuk membagi pencarian
+        int middle = start_index + (end_index - start_index) / 2;
+
+        if (array[middle] == element) {
+            return middle;  // Elemen ditemukan, kembalikan indeks
+        } 
+        else if (array[middle] < element) {
+            start_index = middle + 1;  // Cari di bagian kanan
+        } 
+        else {
+            end_index = middle - 1;  // Cari di bagian kiri
+        }
+    }
+    return -1;  // Elemen tidak ditemukan, kembalikan -1
+}
+
+int main() {
+    int n, cari;
+    cout << "Mau input berapa data? ";
+    cin >> n;
+
+    vector<int> Data(n);  // Vector untuk menyimpan data input
+
+    cout << "Masukkan " << n << " data (integer):\n";
+    for (int i = 0; i < n; i++) {
+        cin >> Data[i];  // Baca data dari input
+    }
+
+    // Sorting menggunakan metode bubble sort agar data terurut
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (Data[i] > Data[j]) {
+                swap(Data[i], Data[j]);
+            }
+        }
+    }
+
+    // Tampilkan data yang sudah terurut
+    cout << "Data yang sudah di sortir:\n[";
+    for (int i = 0; i < n; i++) {
+        cout << Data[i];
+        if (i < n - 1) {
+            cout << ", ";
+        }
+    }
+    cout << "]" << endl;
+
+    cout << "Cari angka berapa? ";
+    cin >> cari;
+
+    // Panggil fungsi binarySearch pada vector yang sudah terurut
+    int found_index = binarySearch(Data, 0, n - 1, cari);
+
+    if (found_index == -1) {
+        cout << "Angka tersebut TIDAK DITEMUKAN!" << endl;
+    } 
+    else {
+        cout << "Angka DITEMUKAN pada lokasi/index [" << found_index << "]" << endl;
+    }
+
+    return 0;
+}
+
+<========================== SEQUENTIAL SEARCHING ==========================>
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n, cari, jumlah = 0;
+    cout << "Mau input berapa data? ";
+    cin >> n;
+
+    vector<int> Data(n);  // Vector untuk menyimpan data input
+
+    cout << "Masukkan " << n << " data (integer):\n";
+    for (int i = 0; i < n; i++) {
+        cin >> Data[i];  // Input data ke vector
+    }
+
+    cout << "Cari angka berapa? ";
+    cin >> cari;
+
+    // Melakukan sequential search dengan mengecek setiap elemen satu per satu
+    for (int i = 0; i < n; i++) {
+        if (Data[i] == cari) {
+            cout << "Angka '" << cari << "' DITEMUKAN pada lokasi/indeks [" << i << "]" << endl;
+            jumlah++;  // Hitung jumlah kemunculan elemen yang dicari
+        }
+    }
+
+    // Jika tidak ditemukan
+    if (jumlah == 0) {
+        cout << "Angka " << cari << " TIDAK DITEMUKAN!" << endl;
+    }
+    // Jika ditemukan satu atau lebih
+    else {
+        cout << "Angka '" << cari << "' DITEMUKAN sebanyak " << jumlah << " kali" << endl;
+    }
+
+    return 0;
+}
