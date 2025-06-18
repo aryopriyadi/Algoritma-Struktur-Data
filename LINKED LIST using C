@@ -1,0 +1,185 @@
+/*
+Linked List memiliki fungsi yang kurang lebih mirip seperti array, tetapi linked list memiliki keunggulan dibandingkan array terutama dalam hal efisiensi memori. 
+Jika dalam array kita harus menetapkan ukuran banyak data yang akan digunakan, lain halnya dalam menggunakan linked list, kita tidak perlu menentukan ukuran banyaknya data tersebut. 
+Kita dapat mengatur alokasi memori sesuai data yang ditambahkan atau dihapus secara dinamis. Linked list dapat kita kembangkan dengan struktur data Stack dan atau Queue.
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+// Definisi struktur data mahasiswa yang akan dijadikan node linked list
+struct mahasiswa{
+    char nama[30], nim[10], fakultas[30], hobi[30]; // Data string untuk mahasiswa
+    int umur; // Data umur mahasiswa
+    struct mahasiswa *next; // Pointer ke node berikutnya dalam linked list
+}*head, *tail, *current;
+// head => pointer yang menyimpan alamat data pertama pada linked list
+// tail => pointer yang menyimpan alamat data terakhir pada linked list
+// current => pointer sementara, digunakan untuk traversing atau manipulasi
+
+// Fungsi untuk menampilkan seluruh data mahasiswa dalam linked list
+void LihatData(){
+    if(head == NULL){ // Jika linked list kosong
+        printf("Belum ada Data, silahkan input dulu!\n");
+    }else{
+        current = head; // Mulai dari node pertama
+        int i = 1; // Index data untuk tampilan
+        while(current != NULL){ // Traversing sampai akhir linked list
+            printf("Data ke - %i\n", i);
+            printf("Nama     : %s\n", current->nama);
+            printf("NIM      : %s\n", current->nim);
+            printf("Fakultas : %s\n", current->fakultas);
+            printf("Hobi     : %s\n", current->hobi);
+            printf("Umur     : %i\n", current->umur);
+            current = current->next; // Pindah ke node berikutnya
+            printf("\n");
+            i++;
+        }
+    }
+    printf("\n");
+}
+
+// Fungsi untuk menambah data baru ke dalam linked list
+void TambahData(){
+    char nama[30], nim[10], fakultas[30], hobi[30];
+    int umur;
+    // Mengalokasikan memori untuk node baru
+    current = (struct mahasiswa*)malloc(sizeof(struct mahasiswa));
+
+    // Input data mahasiswa
+    printf("Nama     : "); fflush(stdin); gets(nama);
+    printf("NIM      : "); scanf("%s", &nim);
+    printf("Fakultas : "); fflush(stdin); gets(fakultas);
+    printf("Hobi     : "); fflush(stdin); gets(hobi);
+    printf("Umur     : "); scanf("%i", &umur);
+
+    // Memindahkan data input ke node baru
+    strcpy(current->nama, nama);
+    strcpy(current->nim, nim);
+    strcpy(current->fakultas, fakultas);
+    strcpy(current->hobi, hobi);
+    current->umur = umur;
+
+    // Jika linked list masih kosong, node baru jadi head dan tail
+    if(head == NULL){
+        head = tail = current;
+    }
+    else{
+        // Jika linked list sudah ada, tambahkan node baru di akhir
+        tail->next = current;
+        tail = current;
+    }
+    tail->next = NULL; // Akhiri linked list
+
+    printf("\nData berhasil diinput");
+}
+
+// Fungsi untuk mengedit data mahasiswa berdasarkan NIM
+void editData(){
+    if(head == NULL){ // Jika linked list kosong
+        printf("Belum ada Data, silahkan input dulu!\n");
+    }else{
+        current = head;
+
+        char nim[10];
+        printf("Cari NIM yang mau diedit : "); scanf("%s", &nim);
+
+        while (current != NULL) { // Traversing setiap node
+            if (strcmp(current->nim, nim) == 0){ // Jika NIM yang dicari ketemu
+                // Tampilkan data mahasiswa yang ditemukan
+                printf("Nama     : %s\n", current->nama);
+                printf("NIM      : %s\n", current->nim);
+                printf("Fakultas : %s\n", current->fakultas);
+                printf("Hobi     : %s\n", current->hobi);
+                printf("Umur     : %i\n\n", current->umur);
+
+                // Input data baru untuk hobi (contoh edit data)
+                printf("EDIT DATA\n");
+                char hobiBaru[30];
+                printf("Hobi baru : "); fflush(stdin); gets(hobiBaru);
+                strcpy(current->hobi, hobiBaru);
+
+                printf("\nData berhasil diedit");
+                break; // Keluar dari loop setelah edit
+            }
+            // Jika tidak ketemu, lanjut ke node berikutnya
+            current = current->next;
+        }
+        if (current == NULL) {
+            // Jika sudah mencapai akhir tanpa menemukan NIM
+            printf("\nData tidak ada");
+        }
+    }
+}
+
+// Fungsi untuk menghapus data mahasiswa berdasarkan NIM
+void deleteData(){
+    if (head == NULL){ // Jika linked list kosong
+        printf("Belum ada Data, silahkan input dulu!\n");
+    }else{
+        struct mahasiswa *temp = head;
+        current = head;
+
+        char nim[10];
+        printf("Cari NIM yang mau dihapus : "); scanf("%s", &nim);
+
+        int index = 0;
+        // Mencari index node dengan NIM yang sesuai
+        while (current != NULL) {
+            if (strcmp(current->nim, nim) == 0){
+                break; // NIM ditemukan
+            }
+            index++;
+            current = current->next;
+        }
+        if (index == 0){ // Jika node pertama yang dihapus
+            head = temp->next; // head menunjuk ke node berikutnya
+            free(temp); // Bebaskan memori node yang dihapus
+            printf("\nData berhasil dihapus");
+        }else{
+            // Geser pointer temp ke node sebelum node yang akan dihapus
+            for (int i = 0; temp != NULL && i < index - 1; i++){
+                temp = temp->next;
+            }
+            if (temp == NULL || temp->next == NULL){
+                printf("\nData tidak ada"); // NIM tidak ditemukan
+            }else{
+                // Hapus node yang diinginkan dan sambungkan node sebelumnya ke node sesudahnya
+                struct mahasiswa *next = temp->next->next;
+                free(temp->next);
+                temp->next = next;
+                printf("\nData berhasil dihapus");
+            }
+        }
+    }
+}
+
+// Fungsi utama - tampilan menu dan interaksi pengguna
+int main()
+{
+    char menu;
+    do{
+        // Tampilan menu
+        printf("MENU KAMPUS\n");
+        printf("1. Lihat Data\n");
+        printf("2. Tambah Data\n");
+        printf("3. Edit Data\n");
+        printf("4. Hapus Data\n");
+        printf("5. Keluar\n");
+        printf("Pilihan : ");
+        scanf(" %[^\n]s", &menu); // Membaca input pilihan menu
+        switch(menu){
+            case '1' : LihatData(); break; // Tampilkan data
+            case '2' : TambahData(); break; // Tambah data baru
+            case '3' : editData(); break; // Edit data berdasarkan NIM
+            case '4' : deleteData(); break; // Hapus data berdasarkan NIM
+            case '5' : break; // Keluar dari program
+            default : printf("Inputan Salah\n\n"); break; // Input salah
+        }
+        getch(); // Tunggu input user agar layar tidak langsung clear
+        system("cls"); // Bersihkan layar di Windows
+    }while(menu != '5'); // Loop sampai pengguna memilih keluar
+
+    return 0;
+}
